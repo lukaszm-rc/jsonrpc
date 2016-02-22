@@ -1,0 +1,31 @@
+{
+  "name": "@etk/jsonrpc",
+  "version": "0.1.0",
+  "description": "Json-rpc implementation",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "docs": "./node_modules/.bin/jsdoc -r -R ./README.md -d doc/ src/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/etk-pl/jsonrpc.git"
+  },
+  "keywords": [
+    "json",
+    "rpc"
+  ],
+  "author": "Michał Żaloudik <michal.zaloudik@redcart.pl>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/etk-pl/jsonrpc/issues"
+  },
+  "homepage": "https://github.com/etk-pl/jsonrpc#readme",
+  "dependencies": {
+    "utls": "^0.2.10"
+  },
+  "devDependencies": {
+    "jsdoc": "^3.4.0",
+    "mocha": "^2.3.4"
+  }
+}
