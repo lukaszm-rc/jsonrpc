@@ -1,0 +1,7 @@
+.idea/
+coverage/
+doc/
+node_modules/
+test/
+.gitignore
+.gitattributes
