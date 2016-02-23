@@ -1,48 +1,128 @@
 # JsonRpc
 ## Schema
-```json
+```javascript
 {
-	"version" : "0.1.0",
-	"id" : 0
-	"ns" : "global",
-	"method" : "",
-	"params" : {},
-	"result" : {},
+	"version" : String,
+	"id" : Integer,
+	"ns" : String,
+	"method" : String,
+	"params" : Object,
+	"result" : *,
 	"error" : {
-		"code" : 0,
-		"message" : ""
+		"code" : Integer,
+		"message" : String
 	}
 }
 ```
-### version
-### id
-### ns
-### method
-### params
-### result
-### error
-## Request
-## Result
-## Notification
-## Class
-### Methods
-#### type
-#### getVersion
-#### getId
-#### getNS
-#### getMethod
-#### getCallback
-#### getResult
-#### getError
-#### getErrorCode
-#### getErrorMessage
-#### setVersion
-#### setId
-#### setNS
-#### setMethod
-#### setCallback
-#### setResult
-#### setError
-#### setErrorCode
-#### setErrorMessage
-### Properties
+## Usage
+### New request
+```javascript
+var jsonrpc = require('@etk/jsonrpc');
+var request = new jsonrpc.Request();
+request.setNS('someNS').setMethod('methodName').setParams({'param1' : 'paramValue'});
+console.log(request.toString());
+// {"version":"0.1.0","id":1,"ns":"someNS","method":"methodName","params":{"param1":"paramValue"}}
+```
+equals to
+```javascript
+var jsonrpc = require('@etk/jsonrpc');
+var request = new jsonrpc.Request({
+	ns : 'someNS',
+	method : 'methodName',
+	params : {param1 : 'paramValue'}
+});
+console.log(request.toString());
+// {"version":"0.1.0","id":1,"ns":"someNS","method":"methodName","params":{"param1":"paramValue"}}
+```
+### New response
+#### with result
+```javascript
+var jsonrpc = require('@etk/jsonrpc');
+var response = new jsonrpc.Response();
+response.setId(1).setResult('someResult');
+console.log(response.toString());
+// {"version":"0.1.0","id":1,"result":"someResult"}
+```
+equals to
+```javascript
+var jsonrpc = require('@etk/jsonrpc');
+var request = new jsonrpc.Request({
+	id : 1,
+	result : 'someResult'
+});
+console.log(request.toString());
+// {"version":"0.1.0","id":1,"result":"someResult"}
+```
+#### with error
+```javascript
+var jsonrpc = require('@etk/jsonrpc');
+var response = new jsonrpc.Response({
+	id : 1,
+	error : {
+		code : 1,
+		message : 'Error message'
+	}
+});
+console.log(response.toString());
+// {"version":"0.1.0","id":1,"error":{"code":1,"message":"Error message"}}
+```
+equals to
+```javascript
+var jsonrpc = require('@etk/jsonrpc');
+var response = new jsonrpc.Response({
+	id : 1,
+	error : {
+		code : 1,
+		message : 'Error message'
+	}
+});
+console.log(response.toString());
+// {"version":"0.1.0","id":1,"error":{"code":1,"message":"Error message"}}
+```
+equals to
+```javascript
+var jsonrpc = require('@etk/jsonrpc');
+var response = new jsonrpc.Response({
+	id : 1,
+	error : {
+		code : 1,
+		message : 'Error message'
+	}
+});
+console.log(response.toString());
+// {"version":"0.1.0","id":1,"error":{"code":1,"message":"Error message"}}
+```
+### New notification
+```javascript
+var jsonrpc = require('@etk/jsonrpc');
+var notification = new jsonrpc.Notification();
+notification.setNS('someNS').setMethod('methodName').setParams({'param1' : 'paramValue'});
+console.log(notification.toString());
+// {"version":"0.1.0","ns":"someNS","method":"methodName","params":{"param1":"paramValue"}}
+```
+equals to
+```javascript
+var jsonrpc = require('@etk/jsonrpc');
+var notification = new jsonrpc.Notification({
+	ns : 'someNS',
+	method : 'methodName',
+	params : {param1 : 'paramValue'}
+});
+console.log(notification.toString());
+// {"version":"0.1.0","ns":"someNS","method":"methodName","params":{"param1":"paramValue"}}
+```
+### Parse message
+```javascript
+var jsonrpc = require('@etk/jsonrpc');
+var notification = jsonrpc.parse('{"version":"0.1.0","ns":"someNS","method":"methodName","params":{"param1":"paramValue"}}');
+console.log(notification.toString());
+// {"version":"0.1.0","ns":"someNS","method":"methodName","params":{"param1":"paramValue"}}
+var notification = jsonrpc.parse({
+	"version" : "0.1.0",
+	"ns" : "someNS",
+	"method" : "methodName",
+	"params" : {"param1" : "paramValue"}
+});
+console.log(notification.toString());
+// {"version":"0.1.0","ns":"someNS","method":"methodName","params":{"param1":"paramValue"}}
+```

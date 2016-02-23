@@ -3,10 +3,11 @@
  */
 "use strict";
 var utls = require('utls');
-var version = require(__dirname + '/../package.json').version;
+var __version = require(__dirname + '/../package.json').version;
 var __id = 0;
 var __callbacks = {};
 var __callbacksTimeout = 60000;
+var __options = {autoFireCallbacks : true};
 /**
  * @abstract
  * @author Michał Żaloudik <michal.zaloudik@redcart.pl>
@@ -19,8 +20,14 @@ class JsonRpc {
 		if (this.constructor === JsonRpc) {
 			throw new TypeError('Abstract class "JsonRpc" cannot be instantiated directly.');
 		}
-		this.message = {};
-		this.setVersion(version);
+		this.message = message || {version : __version};
+	}
+
+	/**
+	 * @param {Object} options
+	 */
+	static setOptions(options) {
+		__options = utls.extend(__options, options);
 	}
 
 	/**
@@ -28,7 +35,164 @@ class JsonRpc {
 	 * @returns {string}
 	 */
 	static getType(message) {
-		return 'request';
+		if (!(message instanceof Object)) {
+			throw new Error('Message parameter must be object');
+		}
+		switch (true) {
+			case JsonRpc.isValidRequest(message):
+				return 'request';
+				break;
+			case JsonRpc.isValidResponse(message):
+				return 'response';
+				break;
+			case JsonRpc.isValidNotification(message):
+				return 'notification';
+				break;
+			default:
+				throw new Error('Unknown message type');
+				break;
+		}
+	}
+
+	/**
+	 * @param {Object|String} message
+	 */
+	static parse(message) {
+		if (!(message instanceof Object)) {
+			if (utls.getType(message) === 'String') {
+				message = JSON.parse(message);
+			} else {
+				throw new Error('Message must be string or object type');
+			}
+		}
+		switch (JsonRpc.getType(message)) {
+			case 'request':
+				return new Request(message);
+				break;
+			case 'response':
+				return new Response(message);
+				break;
+			case 'notification':
+				return new Notification(message);
+				break;
+			default:
+				break;
+		}
+	}
+
+	/**
+	 *
+	 * @param {Object} message
+	 * @returns {Boolean}
+	 */
+	static isValidRequest(message) {
+		if (utls.getType(message) !== 'Object') {
+			return false;
+		}
+		if (message.error !== undefined || message.result !== undefined) {
+			return false;
+		}
+		return message.version === __version && utls.getType(message.id) === 'Integer' && message.id > 0 && utls.getType(message.ns) === 'String' && message.ns.length && utls.getType(message.method) === 'String' && message.method.length && utls.getType(message.params) === 'Object';
+	}
+
+	/**
+	 * @param {Object} message
+	 * @returns {Boolean}
+	 */
+	static isValidResponse(message) {
+		if (utls.getType(message) !== 'Object') {
+			return false;
+		}
+		if (message.method !== undefined || message.ns !== undefined || message.params !== undefined) {
+			return false;
+		}
+		return message.version === __version && utls.getType(message.id) === 'Integer' && message.id > 0 && (message.result !== undefined || ((utls.getType(message.error) === 'Object' && utls.equals(Object.getOwnPropertyNames(message.error).sort(), [
+				'code',
+				'message'
+			]) && utls.getType(message.error.code) === 'Integer' && utls.getType(message.error.message) === 'String') || (utls.getType(message.error) === 'JsonRpcError' && JsonRpcError.isValid(message.error))));
+	}
+
+	/**
+	 * @param {Object} message
+	 * @returns {Boolean}
+	 */
+	static isValidNotification(message) {
+		if (utls.getType(message) !== 'Object') {
+			return false;
+		}
+		if (message.error !== undefined || message.result !== undefined || message.id !== undefined) {
+			return false;
+		}
+		return message.version === __version && utls.getType(message.ns) === 'String' && message.ns.length && utls.getType(message.method) === 'String' && message.method.length && utls.getType(message.params) === 'Object';
+	}
+
+	/**
+	 *
+	 * @param {Object} message
+	 * @returns {Boolean}
+	 */
+	static hasValidSyntax(message) {
+		return JsonRpc.isValidRequest(message) || JsonRpc.isValidResponse(message) || JsonRpc.isValidNotification(message);
+	}
+
+	/**
+	 *
+	 * @returns {number}
+	 */
+	static getNextId() {
+		return ++__id;
+	}
+
+	/**
+	 *
+	 * @param {JsonRpcResponse} response
+	 */
+	static fireCallback(response) {
+		var callback = __callbacks[response.id];
+		if (callback instanceof Response) {
+			if (callback.cb instanceof Function) {
+				callback.cb(response);
+				JsonRpc.removeCallback(response.getId());
+			}
+		} else {
+			throw new Error('Response must be instance of JsonRpcResponse');
+		}
+	}
+
+	/**
+	 *
+	 * @param id
+	 */
+	static removeCallback(id) {
+		var callback = __callbacks[id];
+		if (callback instanceof Object) {
+			clearTimeout(callback.timeout);
+			delete __callbacks[id];
+		}
+	}
+
+	/**
+	 *
+	 * @returns {Boolean}
+	 */
+	get isRequest() {
+		return this instanceof Request;
+	}
+
+	/**
+	 *
+	 * @returns {Boolean}
+	 */
+	get isResponse() {
+		return this instanceof Response;
+	}
+
+	/**
+	 *
+	 * @returns {Boolean}
+	 */
+	get isNotification() {
+		return this instanceof Notification;
 	}
 
 	/**
@@ -187,6 +351,7 @@ class JsonRpc {
 	 * @returns {*}
 	 */
 	getErrorCode() {
+		this.message.error = this.message.error || {};
 		return this.message.error.code;
 	}
 
@@ -196,6 +361,7 @@ class JsonRpc {
 	 * @returns {JsonRpc}
 	 */
 	setErrorCode(code) {
+		this.message.error = this.message.error || {};
 		this.message.error.code = code;
 		return this;
 	}
@@ -205,6 +371,7 @@ class JsonRpc {
 	 * @returns {*}
 	 */
 	getErrorMessage() {
+		this.message.error = this.message.error || {};
 		return this.message.error.message;
 	}
 
@@ -214,57 +381,9 @@ class JsonRpc {
 	 * @returns {JsonRpc}
 	 */
 	setErrorMessage(message) {
+		this.message.error = this.message.error || {};
 		this.message.error.message = message;
 		return this;
-	}
-
-	/**
-	 *
-	 * @returns {Boolean}
-	 */
-	get isRequest() {
-		return true;
-	}
-
-	/**
-	 *
-	 * @returns {Boolean}
-	 */
-	get isResponse() {
-		return true;
-	}
-
-	/**
-	 *
-	 * @returns {Boolean}
-	 */
-	get isNotification() {
-		return true;
-	}
-
-	/**
-	 *
-	 * @param {Object} message
-	 * @returns {Boolean}
-	 */
-	static isValidRequest(message) {
-		return true;
-	}
-
-	/**
-	 * @param {Object} message
-	 * @returns {Boolean}
-	 */
-	static isValidResponse(message) {
-		return true;
-	}
-
-	/**
-	 * @param {Object} message
-	 * @returns {Boolean}
-	 */
-	static isValidNotification(message) {
-		return true;
 	}
 
 	/**
@@ -282,44 +401,14 @@ class JsonRpc {
 	toString() {
 		return JSON.stringify(this.toJSON());
 	}
-
-	/**
-	 *
-	 * @returns {number}
-	 */
-	static getNextId() {
-		return __id++;
-	}
-
-	/**
-	 *
-	 * @param {JsonRpcResponse} response
-	 */
-	static fireCallback(response) {
-		var callback = __callbacks[response.id];
-		if (callback instanceof Object) {
-			if (callback.cb instanceof Function) {
-				callback.cb(response);
-				JsonRpc.removeCallback(response.id);
-			}
-		}
-	}
-
-	/**
-	 *
-	 * @param id
-	 */
-	static removeCallback(id) {
-		var callback = __callbacks[id];
-		if (callback instanceof Object) {
-			clearTimeout(callback.timeout);
-			delete __callbacks[id];
-		}
-	}
 }
 module.exports = JsonRpc;
-module.exports.Request = require(__dirname + '/JsonRpcRequest.js');
-module.exports.Response = require(__dirname + '/JsonRpcResponse.js');
-module.exports.Notification = require(__dirname + '/JsonRpcNotification.js');
-module.exports.Error = require(__dirname + '/JsonRpcError.js');
-module.exports.version = version;
+var Request = require(__dirname + '/JsonRpcRequest.js');
+var Response = require(__dirname + '/JsonRpcResponse.js');
+var Notification = require(__dirname + '/JsonRpcNotification.js');
+var JsonRpcError = require(__dirname + '/JsonRpcError.js');
+module.exports.Request = Request;
+module.exports.Response = Response;
+module.exports.Notification = Notification;
+module.exports.JsonRpcError = JsonRpcError;
+module.exports.version = __version;

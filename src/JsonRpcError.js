@@ -2,6 +2,7 @@
  * @author Michał Żaloudik <michal.zaloudik@redcart.pl>
  */
 "use strict";
+var utls = require('utls');
 /**
  * @author Michał Żaloudik <michal.zaloudik@redcart.pl>
  */
@@ -12,10 +13,10 @@ class JsonRpcError {
 	 * @param code
 	 */
 	constructor(message, code) {
-		if (message instanceof String) {
+		if (utls.getType(message) === 'String') {
 			this.setMessage(message);
 		}
-		if (code instanceof Number) {
+		if (utls.getType(code) === 'Integer') {
 			this.setCode(code);
 		}
 	}
@@ -42,7 +43,7 @@ class JsonRpcError {
 	 * @returns {JsonRpcError}
 	 */
 	setCode(code) {
-		if (!(code instanceof Number)) {
+		if (utls.getType(code) !== 'Integer') {
 			throw new Error('Code must be number');
 		}
 		this.code = code;
@@ -55,7 +56,7 @@ class JsonRpcError {
 	 * @returns {JsonRpcError}
 	 */
 	setMessage(message) {
-		if (!(message instanceof String)) {
+		if (utls.getType(message) !== 'String') {
 			throw new Error('Message must be string');
 		}
 		this.message = message;

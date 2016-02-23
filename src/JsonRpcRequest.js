@@ -7,7 +7,7 @@
  * @type {number}
  * @private
  */
-
+var utls = require('utls');
 var JsonRpc = require(__dirname + '/JsonRpc.js')
 /**
  * @author Michał Żaloudik <michal.zaloudik@redcart.pl>
@@ -18,12 +18,21 @@ class JsonRpcRequest extends JsonRpc {
 	 * @param {Object} message
 	 */
 	constructor(message) {
-		message.id = JsonRpc.getNextId();
-		if (message.ns === undefined) {
-			message.ns = "global";
-		}
-		if(!JsonRpc.validateRequest(message)) {
-			throw new Error('Message is not valid json rpc request');
+		if (message !== undefined) {
+			if (utls.getType(message) !== 'Object') {
+				throw new Error('Message must be object type');
+			}
+			message.version = message.version || JsonRpc.version;
+			message.id = message.id || JsonRpc.getNextId();
+			message.ns = message.ns || 'global';
+			if (!JsonRpc.isValidRequest(message)) {
+				throw new Error('Message is not valid json rpc request');
+			}
+		} else {
+			message = {};
+			message.version = JsonRpc.version;
+			message.id = JsonRpc.getNextId();
+			message.ns = 'global';
 		}
 		super(message);
 	}
