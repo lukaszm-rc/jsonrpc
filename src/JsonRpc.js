@@ -4,6 +4,9 @@
 "use strict";
 var utls = require('utls');
 var version = require(__dirname + '/../package.json').version;
+var __id = 0;
+var __callbacks = {};
+var __callbacksTimeout = 60000;
 /**
  * @abstract
  * @author Michał Żaloudik <michal.zaloudik@redcart.pl>
@@ -16,6 +19,8 @@ class JsonRpc {
 		if (this.constructor === JsonRpc) {
 			throw new TypeError('Abstract class "JsonRpc" cannot be instantiated directly.');
 		}
+		this.message = {};
+		this.setVersion(version);
 	}
 
 	/**
@@ -31,7 +36,7 @@ class JsonRpc {
 	 * @returns {*}
 	 */
 	getVersion() {
-		return this.version;
+		return this.message.version;
 	}
 
 	/**
@@ -39,7 +44,7 @@ class JsonRpc {
 	 * @param version
 	 */
 	setVersion(version) {
-		this.version = version;
+		this.message.version = version;
 		return this;
 	}
 
@@ -48,7 +53,7 @@ class JsonRpc {
 	 * @returns {*}
 	 */
 	getId() {
-		return this.id;
+		return this.message.id;
 	}
 
 	/**
@@ -57,7 +62,7 @@ class JsonRpc {
 	 * @returns {JsonRpc}
 	 */
 	setId(id) {
-		this.id = id;
+		this.message.id = id;
 		return this;
 	}
 
@@ -66,7 +71,7 @@ class JsonRpc {
 	 * @returns {*}
 	 */
 	getNS() {
-		return this.ns;
+		return this.message.ns;
 	}
 
 	/**
@@ -75,7 +80,7 @@ class JsonRpc {
 	 * @returns {JsonRpc}
 	 */
 	setNS(ns) {
-		this.ns = ns;
+		this.message.ns = ns;
 		return this;
 	}
 
@@ -84,7 +89,7 @@ class JsonRpc {
 	 * @returns {*}
 	 */
 	getMethod() {
-		return this.method;
+		return this.message.method;
 	}
 
 	/**
@@ -93,7 +98,7 @@ class JsonRpc {
 	 * @returns {JsonRpc}
 	 */
 	setMethod(method) {
-		this.method = method;
+		this.message.method = method;
 		return this;
 	}
 
@@ -102,7 +107,7 @@ class JsonRpc {
 	 * @returns {*}
 	 */
 	getCallback() {
-		return this.callback;
+		return __callbacks[this.message.id];
 	}
 
 	/**
@@ -110,8 +115,16 @@ class JsonRpc {
 	 * @param callback
 	 * @returns {JsonRpc}
 	 */
-	setCallback(callback) {
-		this.callback = callback;
+	setCallback(callback, tls) {
+		tls = tls || __callbacksTimeout;
+		var self = this;
+		var timeout = setTimeout(() => {
+			JsonRpc.removeCallback(self.message.id)
+		}, tls);
+		__callbacks[this.message.id] = {
+			cb : callback,
+			timeout : timeout
+		};
 		return this;
 	}
 
@@ -120,7 +133,7 @@ class JsonRpc {
 	 * @returns {*}
 	 */
 	getParams() {
-		return this.params;
+		return this.message.params;
 	}
 
 	/**
@@ -129,7 +142,7 @@ class JsonRpc {
 	 * @returns {JsonRpc}
 	 */
 	setParams(params) {
-		this.params = params;
+		this.message.params = params;
 		return this;
 	}
 
@@ -138,7 +151,7 @@ class JsonRpc {
 	 * @returns {*}
 	 */
 	getResult() {
-		return this.result;
+		return this.message.result;
 	}
 
 	/**
@@ -147,7 +160,7 @@ class JsonRpc {
 	 * @returns {JsonRpc}
 	 */
 	setResult(result) {
-		this.result = result;
+		this.message.result = result;
 		return this;
 	}
 
@@ -156,7 +169,7 @@ class JsonRpc {
 	 * @returns {*}
 	 */
 	getError() {
-		return this.error;
+		return this.message.error;
 	}
 
 	/**
@@ -165,7 +178,7 @@ class JsonRpc {
 	 * @returns {JsonRpc}
 	 */
 	setError(error) {
-		this.error = error;
+		this.message.error = error;
 		return this;
 	}
 
@@ -174,7 +187,7 @@ class JsonRpc {
 	 * @returns {*}
 	 */
 	getErrorCode() {
-		return this.error.code;
+		return this.message.error.code;
 	}
 
 	/**
@@ -183,7 +196,7 @@ class JsonRpc {
 	 * @returns {JsonRpc}
 	 */
 	setErrorCode(code) {
-		this.error.code = code;
+		this.message.error.code = code;
 		return this;
 	}
 
@@ -192,7 +205,7 @@ class JsonRpc {
 	 * @returns {*}
 	 */
 	getErrorMessage() {
-		return this.error.message;
+		return this.message.error.message;
 	}
 
 	/**
@@ -201,7 +214,7 @@ class JsonRpc {
 	 * @returns {JsonRpc}
 	 */
 	setErrorMessage(message) {
-		this.error.message = message;
+		this.message.error.message = message;
 		return this;
 	}
 
@@ -259,14 +272,7 @@ class JsonRpc {
 	 * @returns {{version: *, id: *, ns: *, method: *, params: *, callback: *}}
 	 */
 	toJSON() {
-		return {
-			version : this.getVersion(),
-			id : this.getId(),
-			ns : this.getNS(),
-			method : this.getMethod(),
-			params : this.getParams(),
-			callback : this.getCallback()
-		};
+		return this.message;
 	}
 
 	/**
@@ -276,9 +282,44 @@ class JsonRpc {
 	toString() {
 		return JSON.stringify(this.toJSON());
 	}
+
+	/**
+	 *
+	 * @returns {number}
+	 */
+	static getNextId() {
+		return __id++;
+	}
+
+	/**
+	 *
+	 * @param {JsonRpcResponse} response
+	 */
+	static fireCallback(response) {
+		var callback = __callbacks[response.id];
+		if (callback instanceof Object) {
+			if (callback.cb instanceof Function) {
+				callback.cb(response);
+				JsonRpc.removeCallback(response.id);
+			}
+		}
+	}
+
+	/**
+	 *
+	 * @param id
+	 */
+	static removeCallback(id) {
+		var callback = __callbacks[id];
+		if (callback instanceof Object) {
+			clearTimeout(callback.timeout);
+			delete __callbacks[id];
+		}
+	}
 }
 module.exports = JsonRpc;
-modele.exports.Request = require(__dirname + '/JsonRpcRequest.js');
-modele.exports.Response = require(__dirname + '/JsonRpcResponse.js');
-modele.exports.Notification = require(__dirname + '/JsonRpcNotification.js');
-modele.exports.Error = require(__dirname + '/JsonRpcError.js');
+module.exports.Request = require(__dirname + '/JsonRpcRequest.js');
+module.exports.Response = require(__dirname + '/JsonRpcResponse.js');
+module.exports.Notification = require(__dirname + '/JsonRpcNotification.js');
+module.exports.Error = require(__dirname + '/JsonRpcError.js');
+module.exports.version = version;

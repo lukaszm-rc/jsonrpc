@@ -7,7 +7,7 @@
  * @type {number}
  * @private
  */
-var __id = 0;
+
 var JsonRpc = require(__dirname + '/JsonRpc.js')
 /**
  * @author Michał Żaloudik <michal.zaloudik@redcart.pl>
@@ -18,8 +18,7 @@ class JsonRpcRequest extends JsonRpc {
 	 * @param {Object} message
 	 */
 	constructor(message) {
-		__id++;
-		message.id = __id;
+		message.id = JsonRpc.getNextId();
 		if (message.ns === undefined) {
 			message.ns = "global";
 		}

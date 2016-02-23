@@ -8,9 +8,12 @@ var JsonRpc = require(__dirname + '/JsonRpc.js')
  * @extends JsonRpc
  */
 class JsonRpcResponse extends JsonRpc {
-	constructor(message) {
+	constructor(message, options) {
 		JsonRpc.isValidResponse(message);
 		super();
+		this.message = message || {};
+		this.options = options || {};
+
 	}
 	/**
 	 * @private
@@ -20,7 +23,7 @@ class JsonRpcResponse extends JsonRpc {
 		throw new Error('Method not available in module "JsonRpcResponse"');
 	}
 	/**
-	 *
+	 * @private
 	 * @returns {*}
 	 */
 	getNS() {
@@ -28,7 +31,7 @@ class JsonRpcResponse extends JsonRpc {
 	}
 
 	/**
-	 *
+	 * @private
 	 * @param ns
 	 * @returns {JsonRpc}
 	 */
@@ -37,7 +40,7 @@ class JsonRpcResponse extends JsonRpc {
 	}
 
 	/**
-	 *
+	 * @private
 	 * @returns {*}
 	 */
 	getMethod() {
@@ -45,7 +48,7 @@ class JsonRpcResponse extends JsonRpc {
 	}
 
 	/**
-	 *
+	 * @private
 	 * @param method
 	 * @returns {JsonRpc}
 	 */
@@ -54,7 +57,7 @@ class JsonRpcResponse extends JsonRpc {
 	}
 
 	/**
-	 *
+	 * @private
 	 * @returns {*}
 	 */
 	getCallback() {
@@ -62,7 +65,7 @@ class JsonRpcResponse extends JsonRpc {
 	}
 
 	/**
-	 *
+	 * @private
 	 * @param callback
 	 * @returns {JsonRpc}
 	 */
@@ -71,7 +74,7 @@ class JsonRpcResponse extends JsonRpc {
 	}
 
 	/**
-	 *
+	 * @private
 	 * @returns {*}
 	 */
 	getParams() {
@@ -79,7 +82,7 @@ class JsonRpcResponse extends JsonRpc {
 	}
 
 	/**
-	 *
+	 * @private
 	 * @param params
 	 * @returns {JsonRpc}
 	 */

@@ -9,11 +9,13 @@ var JsonRpc = require(__dirname + '/JsonRpc.js')
  */
 class JsonRpcNotification extends JsonRpc {
 	constructor(message) {
-		if (message.ns === undefined) {
-			message.ns = "global";
-		}
-		if (!JsonRpc.validateNotification(message)) {
-			throw new Error('Message is not valid json rpc notification');
+		if (message instanceof Object) {
+			if (message.ns === undefined) {
+				message.ns = "global";
+			}
+			if (!JsonRpc.validateNotification(message)) {
+				throw new Error('Message is not valid json rpc notification');
+			}
 		}
 		super(message);
 	}
