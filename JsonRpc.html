@@ -235,6 +235,10 @@
 </dt>
 <dd>
     
+    <div class="description">
+        Determinates is current message is notification
+    </div>
+    
 
     
 
@@ -291,6 +295,10 @@
 </dt>
 <dd>
     
+    <div class="description">
+        Determinates is current message is request
+    </div>
+    
 
     
 
@@ -346,6 +354,10 @@
     
 </dt>
 <dd>
+    
+    <div class="description">
+        Determinates is current message is response
+    </div>
     
 
     
@@ -409,6 +421,10 @@
 </dt>
 <dd>
 
+    
+    <div class="description">
+        Fires callback for response if any, if callback not found do nothing
+    </div>
     
 
     
@@ -534,6 +550,10 @@
 <dd>
 
     
+    <div class="description">
+        Returns id for new request
+    </div>
+    
 
     
 
@@ -621,12 +641,114 @@
             
 <hr>
 <dt>
+    <h4 class="name" id=".getOptions"><span class="type-signature">&lt;static> </span>getOptions()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Gets global options
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
     <h4 class="name" id=".getType"><span class="type-signature">&lt;static> </span>getType(message)</h4>
     
     
 </dt>
 <dd>
 
+    
+    <div class="description">
+        Gets message type
+    </div>
     
 
     
@@ -735,11 +857,31 @@
     
 
     
+    <h5>Throws:</h5>
+    
+            
+
+    <div class="param-desc">
+    
+        
+<span class="param-type">Error</span>
+
+
+
+    
+    </div>
+
+
+        
 
     
     <h5>Returns:</h5>
     
             
+<div class="param-desc">
+    Posible values: request, response, notification
+</div>
+
 
 
 <dl>
@@ -771,6 +913,10 @@
 </dt>
 <dd>
 
+    
+    <div class="description">
+        Checks that message has correct syntax
+    </div>
     
 
     
@@ -916,6 +1062,10 @@
 <dd>
 
     
+    <div class="description">
+        Checks that message is valid notification
+    </div>
+    
 
     
 
@@ -1059,6 +1209,10 @@
 </dt>
 <dd>
 
+    
+    <div class="description">
+        Checks that message is valid request
+    </div>
     
 
     
@@ -1204,6 +1358,10 @@
 <dd>
 
     
+    <div class="description">
+        Checks that message is valid response
+    </div>
+    
 
     
 
@@ -1348,6 +1506,10 @@
 <dd>
 
     
+    <div class="description">
+        Parse message
+    </div>
+    
 
     
 
@@ -1458,8 +1620,50 @@
     
 
     
+    <h5>Throws:</h5>
+    
+            
+
+    <div class="param-desc">
+    
+        
+<span class="param-type">Error</span>
+
+
 
     
+    </div>
+
+
+        
+
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="JsonRpcRequest.html">JsonRpcRequest</a></span>
+|
+
+<span class="param-type"><a href="JsonRpcResponse.html">JsonRpcResponse</a></span>
+|
+
+<span class="param-type"><a href="JsonRpcNotification.html">JsonRpcNotification</a></span>
+
+
+
+    </dd>
+</dl>
+
+
+        
 
     
 </dd>
@@ -1474,6 +1678,10 @@
 </dt>
 <dd>
 
+    
+    <div class="description">
+        Removes registerd callback if exists
+    </div>
     
 
     
@@ -1511,6 +1719,12 @@
             
 
             <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+
             
             </td>
 
@@ -1592,6 +1806,10 @@
 </dt>
 <dd>
 
+    
+    <div class="description">
+        Sets global options
+    </div>
     
 
     
@@ -1717,6 +1935,10 @@
 <dd>
 
     
+    <div class="description">
+        Gets messeage callback
+    </div>
+    
 
     
 
@@ -1787,7 +2009,10 @@
     </dt>
     <dd>
         
-<span class="param-type">*</span>
+<span class="param-type">function</span>
+|
+
+<span class="param-type">undefined</span>
 
 
 
@@ -1811,99 +2036,9 @@
 <dd>
 
     
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">*</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="getErrorCode"><span class="type-signature"></span>getErrorCode()</h4>
-    
-    
-</dt>
-<dd>
-
+    <div class="description">
+        Gets messeage Error
+    </div>
     
 
     
@@ -1975,101 +2110,7 @@
     </dt>
     <dd>
         
-<span class="param-type">*</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="getErrorMessage"><span class="type-signature"></span>getErrorMessage()</h4>
-    
-    
-</dt>
-<dd>
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">*</span>
+<span class="param-type"><a href="JsonRpcError.html">JsonRpcError</a></span>
 
 
 
@@ -2093,6 +2134,10 @@
 <dd>
 
     
+    <div class="description">
+        Gets messeage id
+    </div>
+    
 
     
 
@@ -2163,7 +2208,7 @@
     </dt>
     <dd>
         
-<span class="param-type">*</span>
+<span class="param-type">Number</span>
 
 
 
@@ -2187,6 +2232,10 @@
 <dd>
 
     
+    <div class="description">
+        Gets messeage method
+    </div>
+    
 
     
 
@@ -2257,7 +2306,7 @@
     </dt>
     <dd>
         
-<span class="param-type">*</span>
+<span class="param-type">String</span>
 
 
 
@@ -2281,6 +2330,10 @@
 <dd>
 
     
+    <div class="description">
+        Gets messeage namespace for method
+    </div>
+    
 
     
 
@@ -2351,7 +2404,7 @@
     </dt>
     <dd>
         
-<span class="param-type">*</span>
+<span class="param-type">String</span>
 
 
 
@@ -2375,6 +2428,10 @@
 <dd>
 
     
+    <div class="description">
+        Gets messeage parameters for method
+    </div>
+    
 
     
 
@@ -2445,7 +2502,7 @@
     </dt>
     <dd>
         
-<span class="param-type">*</span>
+<span class="param-type">Object</span>
 
 
 
@@ -2468,6 +2525,10 @@
 </dt>
 <dd>
 
+    
+    <div class="description">
+        Gets messeage result
+    </div>
     
 
     
@@ -2563,6 +2624,10 @@
 <dd>
 
     
+    <div class="description">
+        Gets messeage schema version
+    </div>
+    
 
     
 
@@ -2633,7 +2698,7 @@
     </dt>
     <dd>
         
-<span class="param-type">*</span>
+<span class="param-type">String</span>
 
 
 
@@ -2650,12 +2715,16 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="setCallback"><span class="type-signature"></span>setCallback(callback)</h4>
+    <h4 class="name" id="setCallback"><span class="type-signature"></span>setCallback(callback, tls)</h4>
     
     
 </dt>
 <dd>
 
+    
+    <div class="description">
+        Sets messeage callback
+    </div>
     
 
     
@@ -2694,13 +2763,43 @@
 
             <td class="type">
             
+                
+<span class="param-type">function</span>
+
+
+
+            
             </td>
 
             
 
             
 
-            <td class="description last"></td>
+            <td class="description last">Callback to be fired when got response</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>tls</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Time in ms how long keep uncalled callback</td>
         </tr>
 
     
@@ -2795,6 +2894,10 @@
 <dd>
 
     
+    <div class="description">
+        Sets messeage
+    </div>
+    
 
     
 
@@ -2832,281 +2935,14 @@
 
             <td class="type">
             
-            </td>
+                
+<span class="param-type"><a href="JsonRpcError.html">JsonRpcError</a></span>
+|
 
-            
+<span class="param-type">Object</span>
 
-            
 
-            <td class="description last"></td>
-        </tr>
 
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="JsonRpc.html">JsonRpc</a></span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="setErrorCode"><span class="type-signature"></span>setErrorCode(code)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>code</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="JsonRpc.html">JsonRpc</a></span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="setErrorMessage"><span class="type-signature"></span>setErrorMessage(message)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>message</code></td>
-            
-
-            <td class="type">
             
             </td>
 
@@ -3209,6 +3045,10 @@
 <dd>
 
     
+    <div class="description">
+        Sets messeage id
+    </div>
+    
 
     
 
@@ -3245,6 +3085,12 @@
             
 
             <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+
             
             </td>
 
@@ -3347,6 +3193,10 @@
 <dd>
 
     
+    <div class="description">
+        Sets messeage method
+    </div>
+    
 
     
 
@@ -3383,6 +3233,12 @@
             
 
             <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
             
             </td>
 
@@ -3485,6 +3341,10 @@
 <dd>
 
     
+    <div class="description">
+        Sets messeage namespace for method
+    </div>
+    
 
     
 
@@ -3521,6 +3381,12 @@
             
 
             <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
             
             </td>
 
@@ -3623,6 +3489,10 @@
 <dd>
 
     
+    <div class="description">
+        Sets messeage parameters for method
+    </div>
+    
 
     
 
@@ -3659,6 +3529,12 @@
             
 
             <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
             
             </td>
 
@@ -3761,6 +3637,10 @@
 <dd>
 
     
+    <div class="description">
+        Sets messeage result
+    </div>
+    
 
     
 
@@ -3797,6 +3677,12 @@
             
 
             <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+
             
             </td>
 
@@ -3899,6 +3785,10 @@
 <dd>
 
     
+    <div class="description">
+        Sets messeage schema version
+    </div>
+    
 
     
 
@@ -3935,6 +3825,12 @@
             
 
             <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
             
             </td>
 
@@ -4242,7 +4138,7 @@
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
 	
-		on 2016-02-23T16:06:16+01:00
+		on 2016-02-24T15:37:17+01:00
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
