@@ -1,4 +1,5 @@
 # JsonRpc
+[![Build Status](https://travis-ci.org/etk-pl/jsonrpc.svg?branch=master)](https://travis-ci.org/etk-pl/jsonrpc)
 ## Schema
 ```javascript
 {
