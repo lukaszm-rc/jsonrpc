@@ -3,7 +3,7 @@
  */
 "use strict";
 var utls = require('utls');
-var __version = require(__dirname + '/../package.json').version;
+var __version = '1.0.0';
 var __id = 0;
 var __callbacks = {};
 var __callbacksTimeout = 60000;

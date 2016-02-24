@@ -126,3 +126,5 @@ var notification = jsonrpc.parse({
 console.log(notification.toString());
 // {"version":"0.1.0","ns":"someNS","method":"methodName","params":{"param1":"paramValue"}}
 ```
+## Docs
+See [github.io pages](http://etk-pl.github.io/jsonrpc/) 
