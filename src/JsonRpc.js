@@ -20,10 +20,25 @@ class JsonRpc {
 		if (this.constructor === JsonRpc) {
 			throw new TypeError('Abstract class "JsonRpc" cannot be instantiated directly.');
 		}
-		this.message = message || {version : __version};
+		if (message.callback !== undefined) {
+			var callback = message.callback;
+			delete message.callback;
+		}
+		this.message = message;
+		if (callback) {
+			this.setCallback(callback);
+		}
+		if (this.constructor === Response) {
+			if (__options.autoFireCallbacks) {
+				if (__callbacks[this.getId()] !== undefined) {
+					JsonRpc.fireCallback(this);
+				}
+			}
+		}
 	}
 
 	/**
+	 * Sets global options
 	 * @param {Object} options
 	 */
 	static setOptions(options) {
@@ -31,8 +46,18 @@ class JsonRpc {
 	}
 
 	/**
+	 * Gets global options
+	 * @returns {Object}
+	 */
+	static getOptions() {
+		return __options;
+	}
+
+	/**
+	 * Gets message type
 	 * @param {Object} message
-	 * @returns {string}
+	 * @returns {string} Posible values: request, response, notification
+	 * @throws {Error}
 	 */
 	static getType(message) {
 		if (!(message instanceof Object)) {
@@ -41,26 +66,29 @@ class JsonRpc {
 		switch (true) {
 			case JsonRpc.isValidRequest(message):
 				return 'request';
-				break;
 			case JsonRpc.isValidResponse(message):
 				return 'response';
-				break;
 			case JsonRpc.isValidNotification(message):
 				return 'notification';
-				break;
 			default:
-				throw new Error('Unknown message type');
 				break;
 		}
 	}
 
 	/**
+	 * Parse message
 	 * @param {Object|String} message
+	 * @returns {JsonRpcRequest|JsonRpcResponse|JsonRpcNotification}
+	 * @throws {Error}
 	 */
 	static parse(message) {
-		if (!(message instanceof Object)) {
+		if (utls.getType(message) !== 'Object') {
 			if (utls.getType(message) === 'String') {
-				message = JSON.parse(message);
+				try {
+					message = JSON.parse(message);
+				} catch (e) {
+					throw new Error(JsonRpcError.E_PARSE.message, JsonRpcError.E_PARSE.code);
+				}
 			} else {
 				throw new Error('Message must be string or object type');
 			}
@@ -68,20 +96,17 @@ class JsonRpc {
 		switch (JsonRpc.getType(message)) {
 			case 'request':
 				return new Request(message);
-				break;
 			case 'response':
 				return new Response(message);
-				break;
 			case 'notification':
 				return new Notification(message);
-				break;
 			default:
-				break;
+				throw new Error('Unknown message type');
 		}
 	}
 
 	/**
-	 *
+	 * Checks that message is valid request
 	 * @param {Object} message
 	 * @returns {Boolean}
 	 */
@@ -96,6 +121,7 @@ class JsonRpc {
 	}
 
 	/**
+	 * Checks that message is valid response
 	 * @param {Object} message
 	 * @returns {Boolean}
 	 */
@@ -106,13 +132,19 @@ class JsonRpc {
 		if (message.method !== undefined || message.ns !== undefined || message.params !== undefined) {
 			return false;
 		}
-		return message.version === __version && utls.getType(message.id) === 'Integer' && message.id > 0 && (message.result !== undefined || ((utls.getType(message.error) === 'Object' && utls.equals(Object.getOwnPropertyNames(message.error).sort(), [
+		if (message.id !== undefined) {
+			if (utls.getType(message.id) !== 'Integer' || message.id <= 0) {
+				return false;
+			}
+		}
+		return message.version === __version && (message.result !== undefined || ((utls.getType(message.error) === 'Object' && utls.equals(Object.getOwnPropertyNames(message.error).sort(), [
 				'code',
 				'message'
 			]) && utls.getType(message.error.code) === 'Integer' && utls.getType(message.error.message) === 'String') || (utls.getType(message.error) === 'JsonRpcError' && JsonRpcError.isValid(message.error))));
 	}
 
 	/**
+	 * Checks that message is valid notification
 	 * @param {Object} message
 	 * @returns {Boolean}
 	 */
@@ -127,7 +159,7 @@ class JsonRpc {
 	}
 
 	/**
-	 *
+	 * Checks that message has correct syntax
 	 * @param {Object} message
 	 * @returns {Boolean}
 	 */
@@ -136,7 +168,7 @@ class JsonRpc {
 	}
 
 	/**
-	 *
+	 * Returns id for new request
 	 * @returns {number}
 	 */
 	static getNextId() {
@@ -144,13 +176,13 @@ class JsonRpc {
 	}
 
 	/**
-	 *
+	 * Fires callback for response if any, if callback not found do nothing
 	 * @param {JsonRpcResponse} response
 	 */
 	static fireCallback(response) {
-		var callback = __callbacks[response.id];
-		if (callback instanceof Response) {
-			if (callback.cb instanceof Function) {
+		if (response instanceof Response) {
+			var callback = __callbacks[response.getId()];
+			if (callback instanceof Object && callback.cb instanceof Function) {
 				callback.cb(response);
 				JsonRpc.removeCallback(response.getId());
 			}
@@ -160,8 +192,8 @@ class JsonRpc {
 	}
 
 	/**
-	 *
-	 * @param id
+	 * Removes registerd callback if exists
+	 * @param {Number} id
 	 */
 	static removeCallback(id) {
 		var callback = __callbacks[id];
@@ -172,7 +204,7 @@ class JsonRpc {
 	}
 
 	/**
-	 *
+	 * Determinates is current message is request
 	 * @returns {Boolean}
 	 */
 	get isRequest() {
@@ -180,7 +212,7 @@ class JsonRpc {
 	}
 
 	/**
-	 *
+	 * Determinates is current message is response
 	 * @returns {Boolean}
 	 */
 	get isResponse() {
@@ -188,7 +220,7 @@ class JsonRpc {
 	}
 
 	/**
-	 *
+	 * Determinates is current message is notification
 	 * @returns {Boolean}
 	 */
 	get isNotification() {
@@ -196,16 +228,16 @@ class JsonRpc {
 	}
 
 	/**
-	 *
-	 * @returns {*}
+	 * Gets messeage schema version
+	 * @returns {String}
 	 */
 	getVersion() {
 		return this.message.version;
 	}
 
 	/**
-	 *
-	 * @param version
+	 * Sets messeage schema version
+	 * @param {String} version
 	 */
 	setVersion(version) {
 		this.message.version = version;
@@ -213,34 +245,34 @@ class JsonRpc {
 	}
 
 	/**
-	 *
-	 * @returns {*}
+	 * Gets messeage id
+	 * @returns {Number}
 	 */
 	getId() {
 		return this.message.id;
 	}
 
 	/**
-	 *
-	 * @param id
+	 * Sets messeage id
+	 * @param {Number} id
 	 * @returns {JsonRpc}
 	 */
 	setId(id) {
-		this.message.id = id;
+		this.message.id = parseInt(id, 10);
 		return this;
 	}
 
 	/**
-	 *
-	 * @returns {*}
+	 * Gets messeage namespace for method
+	 * @returns {String}
 	 */
 	getNS() {
 		return this.message.ns;
 	}
 
 	/**
-	 *
-	 * @param ns
+	 * Sets messeage namespace for method
+	 * @param {String} ns
 	 * @returns {JsonRpc}
 	 */
 	setNS(ns) {
@@ -249,16 +281,16 @@ class JsonRpc {
 	}
 
 	/**
-	 *
-	 * @returns {*}
+	 * Gets messeage method
+	 * @returns {String}
 	 */
 	getMethod() {
 		return this.message.method;
 	}
 
 	/**
-	 *
-	 * @param method
+	 * Sets messeage method
+	 * @param {String} method
 	 * @returns {JsonRpc}
 	 */
 	setMethod(method) {
@@ -267,16 +299,17 @@ class JsonRpc {
 	}
 
 	/**
-	 *
-	 * @returns {*}
+	 * Gets messeage callback
+	 * @returns {Function|undefined}
 	 */
 	getCallback() {
-		return __callbacks[this.message.id];
+		return __callbacks[this.message.id] ? __callbacks[this.message.id].cb : undefined;
 	}
 
 	/**
-	 *
-	 * @param callback
+	 * Sets messeage callback
+	 * @param {Function} callback Callback to be fired when got response
+	 * @param {Number} tls Time in ms how long keep uncalled callback
 	 * @returns {JsonRpc}
 	 */
 	setCallback(callback, tls) {
@@ -289,20 +322,21 @@ class JsonRpc {
 			cb : callback,
 			timeout : timeout
 		};
+		//console.log(__callbacks);
 		return this;
 	}
 
 	/**
-	 *
-	 * @returns {*}
+	 * Gets messeage parameters for method
+	 * @returns {Object}
 	 */
 	getParams() {
 		return this.message.params;
 	}
 
 	/**
-	 *
-	 * @param params
+	 * Sets messeage parameters for method
+	 * @param {Object} params
 	 * @returns {JsonRpc}
 	 */
 	setParams(params) {
@@ -311,7 +345,7 @@ class JsonRpc {
 	}
 
 	/**
-	 *
+	 * Gets messeage result
 	 * @returns {*}
 	 */
 	getResult() {
@@ -319,8 +353,8 @@ class JsonRpc {
 	}
 
 	/**
-	 *
-	 * @param result
+	 * Sets messeage result
+	 * @param {*} result
 	 * @returns {JsonRpc}
 	 */
 	setResult(result) {
@@ -329,60 +363,23 @@ class JsonRpc {
 	}
 
 	/**
-	 *
-	 * @returns {*}
+	 * Gets messeage Error
+	 * @returns {JsonRpcError}
 	 */
 	getError() {
 		return this.message.error;
 	}
 
 	/**
-	 *
-	 * @param error
+	 * Sets messeage
+	 * @param {JsonRpcError|Object} error
 	 * @returns {JsonRpc}
 	 */
 	setError(error) {
+		if (!(error instanceof JsonRpcError)) {
+			error = new JsonRpcError(error);
+		}
 		this.message.error = error;
-		return this;
-	}
-
-	/**
-	 *
-	 * @returns {*}
-	 */
-	getErrorCode() {
-		this.message.error = this.message.error || {};
-		return this.message.error.code;
-	}
-
-	/**
-	 *
-	 * @param code
-	 * @returns {JsonRpc}
-	 */
-	setErrorCode(code) {
-		this.message.error = this.message.error || {};
-		this.message.error.code = code;
-		return this;
-	}
-
-	/**
-	 *
-	 * @returns {*}
-	 */
-	getErrorMessage() {
-		this.message.error = this.message.error || {};
-		return this.message.error.message;
-	}
-
-	/**
-	 *
-	 * @param message
-	 * @returns {JsonRpc}
-	 */
-	setErrorMessage(message) {
-		this.message.error = this.message.error || {};
-		this.message.error.message = message;
 		return this;
 	}
 

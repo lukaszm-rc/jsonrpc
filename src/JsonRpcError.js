@@ -23,7 +23,7 @@ class JsonRpcError {
 
 	/**
 	 *
-	 * @returns {*}
+	 * @returns {Number}
 	 */
 	getCode() {
 		return this.code;
@@ -31,7 +31,7 @@ class JsonRpcError {
 
 	/**
 	 *
-	 * @returns {*|string}
+	 * @returns {String}
 	 */
 	getMessage() {
 		return this.message;
@@ -66,7 +66,7 @@ class JsonRpcError {
 	/**
 	 *
 	 * @param error
-	 * @returns {boolean|Boolean}
+	 * @returns {Boolean}
 	 */
 	static isValid(error) {
 		return error instanceof JsonRpcError || (utls.getType(error) === 'Object' && utls.equals(Object.getOwnPropertyNames(error).sort(), [
@@ -76,7 +76,7 @@ class JsonRpcError {
 	}
 }
 /**
- *
+ * Parse error
  * @type {{code: number, message: string}}
  */
 JsonRpcError.E_PARSE = {
@@ -84,7 +84,7 @@ JsonRpcError.E_PARSE = {
 	message : 'Parse error'
 };
 /**
- *
+ * Invalid Request
  * @type {{code: number, message: string}}
  */
 JsonRpcError.E_INVALID_REQUEST = {
@@ -92,7 +92,7 @@ JsonRpcError.E_INVALID_REQUEST = {
 	message : 'Invalid Request'
 };
 /**
- *
+ * Namespace not found
  * @type {{code: number, message: string}}
  */
 JsonRpcError.E_NAMESPACE_NOT_FOUND = {
@@ -100,7 +100,7 @@ JsonRpcError.E_NAMESPACE_NOT_FOUND = {
 	message : 'Namespace not found'
 };
 /**
- *
+ * Method not found
  * @type {{code: number, message: string}}
  */
 JsonRpcError.E_METHOD_NOT_FOUND = {
@@ -108,7 +108,7 @@ JsonRpcError.E_METHOD_NOT_FOUND = {
 	message : 'Method not found'
 };
 /**
- *
+ * Invalid params
  * @type {{code: number, message: string}}
  */
 JsonRpcError.E_INVALID_PARAMS = {
@@ -116,7 +116,7 @@ JsonRpcError.E_INVALID_PARAMS = {
 	message : 'Invalid params'
 };
 /**
- *
+ * Internal error
  * @type {{code: number, message: string}}
  */
 JsonRpcError.E_INTERNAL = {

@@ -71,36 +71,6 @@ class JsonRpcNotification extends JsonRpc {
 	/**
 	 * @private
 	 */
-	getErrorCode() {
-		throw new Error('Method not available in module "JsonRpcNotification"');
-	}
-
-	/**
-	 * @private
-	 * @param code
-	 */
-	setErrorCode(code) {
-		throw new Error('Method not available in module "JsonRpcNotification"');
-	}
-
-	/**
-	 * @private
-	 */
-	getErrorMessage() {
-		throw new Error('Method not available in module "JsonRpcNotification"');
-	}
-
-	/**
-	 * @private
-	 * @param code
-	 */
-	setErrorMessage(code) {
-		throw new Error('Method not available in module "JsonRpcNotification"');
-	}
-
-	/**
-	 * @private
-	 */
 	getResult() {
 		throw new Error('Method not available in module "JsonRpcNotification"');
 	}

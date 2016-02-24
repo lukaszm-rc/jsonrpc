@@ -25,6 +25,7 @@ class JsonRpcRequest extends JsonRpc {
 			message.version = message.version || JsonRpc.version;
 			message.id = message.id || JsonRpc.getNextId();
 			message.ns = message.ns || 'global';
+			message.params = message.params || {};
 			if (!JsonRpc.isValidRequest(message)) {
 				throw new Error('Message is not valid json rpc request');
 			}
@@ -33,6 +34,7 @@ class JsonRpcRequest extends JsonRpc {
 			message.version = JsonRpc.version;
 			message.id = JsonRpc.getNextId();
 			message.ns = 'global';
+			message.params = message.params || {};
 		}
 		super(message);
 	}
@@ -57,36 +59,6 @@ class JsonRpcRequest extends JsonRpc {
 	 * @param error
 	 */
 	setError(error) {
-		throw new Error('Method not available in module "JsonRpcRequest"');
-	}
-
-	/**
-	 * @private
-	 */
-	getErrorCode() {
-		throw new Error('Method not available in module "JsonRpcRequest"');
-	}
-
-	/**
-	 * @private
-	 * @param code
-	 */
-	setErrorCode(code) {
-		throw new Error('Method not available in module "JsonRpcRequest"');
-	}
-
-	/**
-	 * @private
-	 */
-	getErrorMessage() {
-		throw new Error('Method not available in module "JsonRpcRequest"');
-	}
-
-	/**
-	 * @private
-	 * @param code
-	 */
-	setErrorMessage(code) {
 		throw new Error('Method not available in module "JsonRpcRequest"');
 	}
 
