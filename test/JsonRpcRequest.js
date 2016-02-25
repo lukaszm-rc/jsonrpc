@@ -41,7 +41,7 @@ describe('JsonRpcRequest', () => {
 		it('constructor params', (done) => {
 			assert.deepEqual((new jsonrpc.Request({
 				id : 1,
-				ns : "someNS",
+				resource : "someNS",
 				method : "someMethod",
 				params : {some : "params"},
 				callback : (res) => {
@@ -51,10 +51,10 @@ describe('JsonRpcRequest', () => {
 				}
 			})).toJSON(), {
 				id : 1,
-				"version" : jsonrpc.version,
-				"ns" : "someNS",
-				"method" : "someMethod",
-				"params" : {"some" : "params"}
+				version : jsonrpc.version,
+				resource : "someNS",
+				method : "someMethod",
+				params : {"some" : "params"}
 			});
 			setImmediate(() => {
 				new jsonrpc.Response({id:1, result:""});
@@ -63,7 +63,7 @@ describe('JsonRpcRequest', () => {
 		it('methods', (done) => {
 			var not = new jsonrpc.Request();
 			not.setId(2);
-			not.setNS("someNS");
+			not.setResource("someNS");
 			not.setMethod("someMethod");
 			not.setParams({some : "params"});
 			not.setCallback((res) => {
@@ -73,10 +73,10 @@ describe('JsonRpcRequest', () => {
 			});
 			assert.deepEqual(not.toJSON(), {
 				id : 2,
-				"version" : jsonrpc.version,
-				"ns" : "someNS",
-				"method" : "someMethod",
-				"params" : {"some" : "params"}
+				version : jsonrpc.version,
+				resource : "someNS",
+				method : "someMethod",
+				params : {"some" : "params"}
 			});
 			setImmediate(() => {
 				new jsonrpc.Response({id:2, result:""});

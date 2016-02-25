@@ -3,7 +3,7 @@
  */
 "use strict";
 var utls = require('utls');
-var __version = '1.0.0';
+var __version = '1.1.0';
 var __id = 0;
 var __callbacks = {};
 var __callbacksTimeout = 60000;
@@ -117,7 +117,7 @@ class JsonRpc {
 		if (message.error !== undefined || message.result !== undefined) {
 			return false;
 		}
-		return message.version === __version && utls.getType(message.id) === 'Integer' && message.id > 0 && utls.getType(message.ns) === 'String' && message.ns.length && utls.getType(message.method) === 'String' && message.method.length && utls.getType(message.params) === 'Object';
+		return message.version === __version && utls.getType(message.id) === 'Integer' && message.id > 0 && utls.getType(message.resource) === 'String' && message.resource.length && utls.getType(message.method) === 'String' && message.method.length && utls.getType(message.params) === 'Object';
 	}
 
 	/**
@@ -129,7 +129,7 @@ class JsonRpc {
 		if (utls.getType(message) !== 'Object') {
 			return false;
 		}
-		if (message.method !== undefined || message.ns !== undefined || message.params !== undefined) {
+		if (message.method !== undefined || message.resource !== undefined || message.params !== undefined) {
 			return false;
 		}
 		if (message.id !== undefined) {
@@ -155,7 +155,7 @@ class JsonRpc {
 		if (message.error !== undefined || message.result !== undefined || message.id !== undefined) {
 			return false;
 		}
-		return message.version === __version && utls.getType(message.ns) === 'String' && message.ns.length && utls.getType(message.method) === 'String' && message.method.length && utls.getType(message.params) === 'Object';
+		return message.version === __version && utls.getType(message.resource) === 'String' && message.resource.length && utls.getType(message.method) === 'String' && message.method.length && utls.getType(message.params) === 'Object';
 	}
 
 	/**
@@ -263,20 +263,20 @@ class JsonRpc {
 	}
 
 	/**
-	 * Gets messeage namespace for method
+	 * Gets messeage resource for method
 	 * @returns {String}
 	 */
-	getNS() {
-		return this.message.ns;
+	getResource() {
+		return this.message.resource;
 	}
 
 	/**
-	 * Sets messeage namespace for method
-	 * @param {String} ns
+	 * Sets messeage resource for method
+	 * @param {String} resource
 	 * @returns {JsonRpc}
 	 */
-	setNS(ns) {
-		this.message.ns = ns;
+	setResource(resource) {
+		this.message.resource = resource;
 		return this;
 	}
 
@@ -385,7 +385,7 @@ class JsonRpc {
 
 	/**
 	 *
-	 * @returns {{version: *, id: *, ns: *, method: *, params: *, callback: *}}
+	 * @returns {{version: *, id: *, resource: *, method: *, params: *, callback: *}}
 	 */
 	toJSON() {
 		return this.message;

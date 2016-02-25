@@ -44,7 +44,7 @@ describe('JsonRpcResponse', () => {
 				result : {some : 'result'}
 			})).toJSON(), {
 				id : 1,
-				"version" : jsonrpc.version,
+				version : jsonrpc.version,
 				result : {some : 'result'}
 			});
 		});
@@ -54,7 +54,7 @@ describe('JsonRpcResponse', () => {
 			not.setResult({some : 'result'});
 			assert.deepEqual(not.toJSON(), {
 				id : 1,
-				"version" : jsonrpc.version,
+				version : jsonrpc.version,
 				result : {some : 'result'}
 			});
 		});

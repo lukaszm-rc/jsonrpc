@@ -40,26 +40,26 @@ describe('JsonRpcNotification', () => {
 	describe('manual creation', () => {
 		it('constructor params', () => {
 			assert.deepEqual((new jsonrpc.Notification({
-				ns : "someNS",
+				resource : "someResource",
 				method : "someMethod",
 				params : {some : "params"}
 			})).toJSON(), {
-				"version" : jsonrpc.version,
-				"ns" : "someNS",
-				"method" : "someMethod",
-				"params" : {"some" : "params"}
+				version : jsonrpc.version,
+				resource : "someResource",
+				method : "someMethod",
+				params : {"some" : "params"}
 			});
 		});
 		it('methods', () => {
 			var not = new jsonrpc.Notification();
-			not.setNS("someNS");
+			not.setResource("someResource");
 			not.setMethod("someMethod");
 			not.setParams({some : "params"});
 			assert.deepEqual(not.toJSON(), {
-				"version" : jsonrpc.version,
-				"ns" : "someNS",
-				"method" : "someMethod",
-				"params" : {"some" : "params"}
+				version : jsonrpc.version,
+				resource : "someResource",
+				method : "someMethod",
+				params : {"some" : "params"}
 			});
 		});
 	});

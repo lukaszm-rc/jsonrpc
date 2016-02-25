@@ -5,7 +5,7 @@
 {
 	"version" : String,
 	"id" : Integer,
-	"ns" : String,
+	"resource" : String,
 	"method" : String,
 	"params" : Object,
 	"result" : *,
@@ -20,20 +20,20 @@
 ```javascript
 var jsonrpc = require('@etk/jsonrpc');
 var request = new jsonrpc.Request();
-request.setNS('someNS').setMethod('methodName').setParams({'param1' : 'paramValue'});
+request.setResource('someResource').setMethod('methodName').setParams({'param1' : 'paramValue'});
 console.log(request.toString());
-// {"version":"0.1.0","id":1,"ns":"someNS","method":"methodName","params":{"param1":"paramValue"}}
+// {"version":"0.1.0","id":1,"resource" : "someResource","method":"methodName","params":{"param1":"paramValue"}}
 ```
 equals to
 ```javascript
 var jsonrpc = require('@etk/jsonrpc');
 var request = new jsonrpc.Request({
-	ns : 'someNS',
+	resource : 'someResource',
 	method : 'methodName',
 	params : {param1 : 'paramValue'}
 });
 console.log(request.toString());
-// {"version":"0.1.0","id":1,"ns":"someNS","method":"methodName","params":{"param1":"paramValue"}}
+// {"version":"0.1.0","id":1,"resource" : "someResource","method":"methodName","params":{"param1":"paramValue"}}
 ```
 ### New response
 #### with result
@@ -97,35 +97,35 @@ console.log(response.toString());
 ```javascript
 var jsonrpc = require('@etk/jsonrpc');
 var notification = new jsonrpc.Notification();
-notification.setNS('someNS').setMethod('methodName').setParams({'param1' : 'paramValue'});
+notification.setResource('someResource').setMethod('methodName').setParams({'param1' : 'paramValue'});
 console.log(notification.toString());
-// {"version":"0.1.0","ns":"someNS","method":"methodName","params":{"param1":"paramValue"}}
+// {"version":"0.1.0","resource" : "someResource","method":"methodName","params":{"param1":"paramValue"}}
 ```
 equals to
 ```javascript
 var jsonrpc = require('@etk/jsonrpc');
 var notification = new jsonrpc.Notification({
-	ns : 'someNS',
+	resource : 'someResource',
 	method : 'methodName',
 	params : {param1 : 'paramValue'}
 });
 console.log(notification.toString());
-// {"version":"0.1.0","ns":"someNS","method":"methodName","params":{"param1":"paramValue"}}
+// {"version":"0.1.0","resource" : "someResource","method":"methodName","params":{"param1":"paramValue"}}
 ```
 ### Parse message
 ```javascript
 var jsonrpc = require('@etk/jsonrpc');
-var notification = jsonrpc.parse('{"version":"0.1.0","ns":"someNS","method":"methodName","params":{"param1":"paramValue"}}');
+var notification = jsonrpc.parse('{"version":"0.1.0","resource" : "someResource","method":"methodName","params":{"param1":"paramValue"}}');
 console.log(notification.toString());
-// {"version":"0.1.0","ns":"someNS","method":"methodName","params":{"param1":"paramValue"}}
+// {"version":"0.1.0","resource" : "someResource","method":"methodName","params":{"param1":"paramValue"}}
 var notification = jsonrpc.parse({
 	"version" : "0.1.0",
-	"ns" : "someNS",
+	"resource" : "someResource",
 	"method" : "methodName",
 	"params" : {"param1" : "paramValue"}
 });
 console.log(notification.toString());
-// {"version":"0.1.0","ns":"someNS","method":"methodName","params":{"param1":"paramValue"}}
+// {"version":"0.1.0","resource" : "someResource","method":"methodName","params":{"param1":"paramValue"}}
 ```
 ## Docs
 See [github.io pages](http://etk-pl.github.io/jsonrpc/) 

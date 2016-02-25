@@ -24,7 +24,7 @@ class JsonRpcRequest extends JsonRpc {
 			}
 			message.version = message.version || JsonRpc.version;
 			message.id = message.id || JsonRpc.getNextId();
-			message.ns = message.ns || 'global';
+			message.resource = message.resource || '__global__';
 			message.params = message.params || {};
 			if (!JsonRpc.isValidRequest(message)) {
 				throw new Error('Message is not valid json rpc request');
@@ -33,7 +33,7 @@ class JsonRpcRequest extends JsonRpc {
 			message = {};
 			message.version = JsonRpc.version;
 			message.id = JsonRpc.getNextId();
-			message.ns = 'global';
+			message.resource = '__global__';
 			message.params = message.params || {};
 		}
 		super(message);

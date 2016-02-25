@@ -18,14 +18,14 @@ class JsonRpcNotification extends JsonRpc {
 				throw new Error('Message must be object type');
 			}
 			message.version = message.version || JsonRpc.version;
-			message.ns = message.ns || 'global';
+			message.resource = message.resource || '__global__';
 			if (!JsonRpc.isValidNotification(message)) {
 				throw new Error('Message is not valid json rpc notification');
 			}
 		} else {
 			message = {};
 			message.version = JsonRpc.version;
-			message.ns = 'global';
+			message.resource = '__global__';
 		}
 		super(message);
 	}
