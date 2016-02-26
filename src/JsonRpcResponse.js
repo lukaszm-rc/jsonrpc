@@ -40,16 +40,16 @@ class JsonRpcResponse extends JsonRpc {
 	 * @private
 	 * @returns {*}
 	 */
-	getNS() {
+	getResource() {
 		throw new Error('Method not available in module "JsonRpcResponse"');
 	}
 
 	/**
 	 * @private
-	 * @param ns
+	 * @param resource
 	 * @returns {JsonRpc}
 	 */
-	setNS(ns) {
+	setResource(resource) {
 		throw new Error('Method not available in module "JsonRpcResponse"');
 	}
 
