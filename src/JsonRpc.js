@@ -3,6 +3,7 @@
  */
 "use strict";
 var utls = require('utls');
+var JSONLess = require('json-less');
 var __version = '1.1.0';
 var __id = 0;
 var __callbacks = {};
@@ -85,7 +86,7 @@ class JsonRpc {
 		if (utls.getType(message) !== 'Object') {
 			if (utls.getType(message) === 'String') {
 				try {
-					message = JSON.parse(message);
+					message = JSONLess.parse(message);
 				} catch (e) {
 					throw new Error(JsonRpcError.E_PARSE.message, JsonRpcError.E_PARSE.code);
 				}
@@ -396,7 +397,7 @@ class JsonRpc {
 	 * @returns {String}
 	 */
 	toString() {
-		return JSON.stringify(this.toJSON());
+		return JSONLess.stringify(this.toJSON());
 	}
 }
 module.exports = JsonRpc;
@@ -409,3 +410,4 @@ module.exports.Response = Response;
 module.exports.Notification = Notification;
 module.exports.JsonRpcError = JsonRpcError;
 module.exports.version = __version;
+module.exports.addHandler = JSONLess.addHandler;

@@ -127,5 +127,8 @@ var notification = jsonrpc.parse({
 console.log(notification.toString());
 // {"version":"0.1.0","resource" : "someResource","method":"methodName","params":{"param1":"paramValue"}}
 ```
+### JSONLess
+JSONLess allows non-primitives values like ```Date``` or MongoDB ```ObjectID``` to be transfered over JSON
+See [JSONLess github.io pages](http://ponury-kostek.github.io/json-less/) for mor info 
 ## Docs
 See [github.io pages](http://etk-pl.github.io/jsonrpc/) 
