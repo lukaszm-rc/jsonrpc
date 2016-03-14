@@ -2,4 +2,5 @@
  * @author Michał Żaloudik <michal.zaloudik@redcart.pl>
  */
 "use strict";
-module.exports = require(__dirname + '/src/JsonRpc.js');
+var JsonRpc = require('./src/JsonRpc.js');
+module.exports = JsonRpc;

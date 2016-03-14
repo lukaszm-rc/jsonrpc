@@ -3,6 +3,7 @@
   "version": "1.2.0",
   "description": "Json-rpc implementation",
   "main": "index.js",
+  "browser" : "browser.js",
   "scripts": {
     "test": "./node_modules/mocha/bin/_mocha",
     "coverage": "./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha",
@@ -24,12 +25,13 @@
   },
   "homepage": "https://github.com/etk-pl/jsonrpc#readme",
   "dependencies": {
-    "json-less": "^0.2.1",
-    "utls": "^0.2.10"
+    "ink-docstrap": "^1.1.4",
+    "json-less": "^0.2.5",
+    "utls": "^0.2.12"
   },
   "devDependencies": {
-    "coveralls": "^2.11.6",
-    "ink-docstrap": "^1.1.2",
+    "coveralls": "^2.11.8",
+    "ink-docstrap": "^1.1.4",
     "istanbul": "^0.4.2",
     "jsdoc": "^3.4.0",
     "mocha": "^2.3.4",

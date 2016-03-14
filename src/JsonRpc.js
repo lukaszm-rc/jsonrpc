@@ -401,10 +401,10 @@ class JsonRpc {
 	}
 }
 module.exports = JsonRpc;
-var Request = require(__dirname + '/JsonRpcRequest.js');
-var Response = require(__dirname + '/JsonRpcResponse.js');
-var Notification = require(__dirname + '/JsonRpcNotification.js');
-var JsonRpcError = require(__dirname + '/JsonRpcError.js');
+var Request = require('./JsonRpcRequest.js');
+var Response = require('./JsonRpcResponse.js');
+var Notification = require('./JsonRpcNotification.js');
+var JsonRpcError = require('./JsonRpcError.js');
 module.exports.Request = Request;
 module.exports.Response = Response;
 module.exports.Notification = Notification;

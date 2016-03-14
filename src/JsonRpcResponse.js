@@ -3,7 +3,7 @@
  */
 "use strict";
 var utls = require('utls');
-var JsonRpc = require(__dirname + '/JsonRpc.js')
+var JsonRpc = require('./JsonRpc.js');
 /**
  * @author Michał Żaloudik <michal.zaloudik@redcart.pl>
  * @extends JsonRpc
@@ -80,10 +80,11 @@ class JsonRpcResponse extends JsonRpc {
 
 	/**
 	 * @private
-	 * @param callback
+	 * @param {Function} callback
+	 * @param {Number} tls
 	 * @returns {JsonRpc}
 	 */
-	setCallback(callback) {
+	setCallback(callback, tls) {
 		throw new Error('Method not available in module "JsonRpcResponse"');
 	}
 

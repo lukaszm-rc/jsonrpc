@@ -3,7 +3,7 @@
  */
 "use strict";
 var utls = require('utls');
-var JsonRpc = require(__dirname + '/JsonRpc.js')
+var JsonRpc = require('./JsonRpc.js')
 /**
  * @author Michał Żaloudik <michal.zaloudik@redcart.pl>
  * @extends JsonRpc
