@@ -3,6 +3,7 @@
   "version": "1.2.0",
   "description": "Json-rpc implementation",
   "main": "index.js",
+
   "scripts": {
     "test": "./node_modules/mocha/bin/_mocha",
     "coverage": "./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha",
