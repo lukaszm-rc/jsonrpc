@@ -100,7 +100,7 @@
 var request = new jsonrpc.Request();
 request.setResource('someResource').setMethod('methodName').setParams({'param1' : 'paramValue'});
 console.log(request.toString());
-// {&quot;version&quot;:&quot;0.1.0&quot;,&quot;id&quot;:1,&quot;resource&quot; : &quot;someResource&quot;,&quot;method&quot;:&quot;methodName&quot;,&quot;params&quot;:{&quot;param1&quot;:&quot;paramValue&quot;}}</code></pre><p>equals to</p>
+// {&quot;version&quot;:&quot;1.1.0&quot;,&quot;id&quot;:1,&quot;resource&quot; : &quot;someResource&quot;,&quot;method&quot;:&quot;methodName&quot;,&quot;params&quot;:{&quot;param1&quot;:&quot;paramValue&quot;}}</code></pre><p>equals to</p>
 <pre class="prettyprint source lang-javascript"><code>var jsonrpc = require('@etk/jsonrpc');
 var request = new jsonrpc.Request({
     resource : 'someResource',
@@ -108,18 +108,18 @@ var request = new jsonrpc.Request({
     params : {param1 : 'paramValue'}
 });
 console.log(request.toString());
-// {&quot;version&quot;:&quot;0.1.0&quot;,&quot;id&quot;:1,&quot;resource&quot; : &quot;someResource&quot;,&quot;method&quot;:&quot;methodName&quot;,&quot;params&quot;:{&quot;param1&quot;:&quot;paramValue&quot;}}</code></pre><h3>New response</h3><h4>with result</h4><pre class="prettyprint source lang-javascript"><code>var jsonrpc = require('@etk/jsonrpc');
+// {&quot;version&quot;:&quot;1.1.0&quot;,&quot;id&quot;:1,&quot;resource&quot; : &quot;someResource&quot;,&quot;method&quot;:&quot;methodName&quot;,&quot;params&quot;:{&quot;param1&quot;:&quot;paramValue&quot;}}</code></pre><h3>New response</h3><h4>with result</h4><pre class="prettyprint source lang-javascript"><code>var jsonrpc = require('@etk/jsonrpc');
 var response = new jsonrpc.Response();
 response.setId(1).setResult('someResult');
 console.log(response.toString());
-// {&quot;version&quot;:&quot;0.1.0&quot;,&quot;id&quot;:1,&quot;result&quot;:&quot;someResult&quot;}</code></pre><p>equals to</p>
+// {&quot;version&quot;:&quot;1.1.0&quot;,&quot;id&quot;:1,&quot;result&quot;:&quot;someResult&quot;}</code></pre><p>equals to</p>
 <pre class="prettyprint source lang-javascript"><code>var jsonrpc = require('@etk/jsonrpc');
 var request = new jsonrpc.Request({
     id : 1,
     result : 'someResult'
 });
 console.log(request.toString());
-// {&quot;version&quot;:&quot;0.1.0&quot;,&quot;id&quot;:1,&quot;result&quot;:&quot;someResult&quot;}</code></pre><h4>with error</h4><pre class="prettyprint source lang-javascript"><code>var jsonrpc = require('@etk/jsonrpc');
+// {&quot;version&quot;:&quot;1.1.0&quot;,&quot;id&quot;:1,&quot;result&quot;:&quot;someResult&quot;}</code></pre><h4>with error</h4><pre class="prettyprint source lang-javascript"><code>var jsonrpc = require('@etk/jsonrpc');
 var response = new jsonrpc.Response({
     id : 1,
     error : {
@@ -128,7 +128,7 @@ var response = new jsonrpc.Response({
     }
 });
 console.log(response.toString());
-// {&quot;version&quot;:&quot;0.1.0&quot;,&quot;id&quot;:1,&quot;error&quot;:{&quot;code&quot;:1,&quot;message&quot;:&quot;Error message&quot;}}</code></pre><p>equals to</p>
+// {&quot;version&quot;:&quot;1.1.0&quot;,&quot;id&quot;:1,&quot;error&quot;:{&quot;code&quot;:1,&quot;message&quot;:&quot;Error message&quot;}}</code></pre><p>equals to</p>
 <pre class="prettyprint source lang-javascript"><code>var jsonrpc = require('@etk/jsonrpc');
 var response = new jsonrpc.Response({
     id : 1,
@@ -138,7 +138,7 @@ var response = new jsonrpc.Response({
     }
 });
 console.log(response.toString());
-// {&quot;version&quot;:&quot;0.1.0&quot;,&quot;id&quot;:1,&quot;error&quot;:{&quot;code&quot;:1,&quot;message&quot;:&quot;Error message&quot;}}</code></pre><p>equals to</p>
+// {&quot;version&quot;:&quot;1.1.0&quot;,&quot;id&quot;:1,&quot;error&quot;:{&quot;code&quot;:1,&quot;message&quot;:&quot;Error message&quot;}}</code></pre><p>equals to</p>
 <pre class="prettyprint source lang-javascript"><code>var jsonrpc = require('@etk/jsonrpc');
 var response = new jsonrpc.Response({
     id : 1,
@@ -148,11 +148,11 @@ var response = new jsonrpc.Response({
     }
 });
 console.log(response.toString());
-// {&quot;version&quot;:&quot;0.1.0&quot;,&quot;id&quot;:1,&quot;error&quot;:{&quot;code&quot;:1,&quot;message&quot;:&quot;Error message&quot;}}</code></pre><h3>New notification</h3><pre class="prettyprint source lang-javascript"><code>var jsonrpc = require('@etk/jsonrpc');
+// {&quot;version&quot;:&quot;1.1.0&quot;,&quot;id&quot;:1,&quot;error&quot;:{&quot;code&quot;:1,&quot;message&quot;:&quot;Error message&quot;}}</code></pre><h3>New notification</h3><pre class="prettyprint source lang-javascript"><code>var jsonrpc = require('@etk/jsonrpc');
 var notification = new jsonrpc.Notification();
 notification.setResource('someResource').setMethod('methodName').setParams({'param1' : 'paramValue'});
 console.log(notification.toString());
-// {&quot;version&quot;:&quot;0.1.0&quot;,&quot;resource&quot; : &quot;someResource&quot;,&quot;method&quot;:&quot;methodName&quot;,&quot;params&quot;:{&quot;param1&quot;:&quot;paramValue&quot;}}</code></pre><p>equals to</p>
+// {&quot;version&quot;:&quot;1.1.0&quot;,&quot;resource&quot; : &quot;someResource&quot;,&quot;method&quot;:&quot;methodName&quot;,&quot;params&quot;:{&quot;param1&quot;:&quot;paramValue&quot;}}</code></pre><p>equals to</p>
 <pre class="prettyprint source lang-javascript"><code>var jsonrpc = require('@etk/jsonrpc');
 var notification = new jsonrpc.Notification({
     resource : 'someResource',
@@ -160,18 +160,40 @@ var notification = new jsonrpc.Notification({
     params : {param1 : 'paramValue'}
 });
 console.log(notification.toString());
-// {&quot;version&quot;:&quot;0.1.0&quot;,&quot;resource&quot; : &quot;someResource&quot;,&quot;method&quot;:&quot;methodName&quot;,&quot;params&quot;:{&quot;param1&quot;:&quot;paramValue&quot;}}</code></pre><h3>Parse message</h3><pre class="prettyprint source lang-javascript"><code>var jsonrpc = require('@etk/jsonrpc');
-var notification = jsonrpc.parse('{&quot;version&quot;:&quot;0.1.0&quot;,&quot;resource&quot; : &quot;someResource&quot;,&quot;method&quot;:&quot;methodName&quot;,&quot;params&quot;:{&quot;param1&quot;:&quot;paramValue&quot;}}');
+// {&quot;version&quot;:&quot;1.1.0&quot;,&quot;resource&quot; : &quot;someResource&quot;,&quot;method&quot;:&quot;methodName&quot;,&quot;params&quot;:{&quot;param1&quot;:&quot;paramValue&quot;}}</code></pre><h3>Parse message</h3><pre class="prettyprint source lang-javascript"><code>var jsonrpc = require('@etk/jsonrpc');
+var notification = jsonrpc.parse('{&quot;version&quot;:&quot;1.1.0&quot;,&quot;resource&quot; : &quot;someResource&quot;,&quot;method&quot;:&quot;methodName&quot;,&quot;params&quot;:{&quot;param1&quot;:&quot;paramValue&quot;}}');
 console.log(notification.toString());
-// {&quot;version&quot;:&quot;0.1.0&quot;,&quot;resource&quot; : &quot;someResource&quot;,&quot;method&quot;:&quot;methodName&quot;,&quot;params&quot;:{&quot;param1&quot;:&quot;paramValue&quot;}}
-var notification = jsonrpc.parse({
-    &quot;version&quot; : &quot;0.1.0&quot;,
-    &quot;resource&quot; : &quot;someResource&quot;,
-    &quot;method&quot; : &quot;methodName&quot;,
-    &quot;params&quot; : {&quot;param1&quot; : &quot;paramValue&quot;}
+// {&quot;version&quot;:&quot;1.1.0&quot;,&quot;resource&quot; : &quot;someResource&quot;,&quot;method&quot;:&quot;methodName&quot;,&quot;params&quot;:{&quot;param1&quot;:&quot;paramValue&quot;}}</code></pre><h3>Callbacks</h3><pre class="prettyprint source lang-javascript"><code>var jsonrpc = require('@etk/jsonrpc');
+
+var request = new jsonrpc.Request();
+request.setMethod('someMethod');
+request.setCallback((res) => {
+    console.log('Got response for message #' + request.getId());
+    console.log(res);
 });
-console.log(notification.toString());
-// {&quot;version&quot;:&quot;0.1.0&quot;,&quot;resource&quot; : &quot;someResource&quot;,&quot;method&quot;:&quot;methodName&quot;,&quot;params&quot;:{&quot;param1&quot;:&quot;paramValue&quot;}}</code></pre><h3>JSONLess</h3><p>JSONLess allows non-primitives values like <code>Date</code> or MongoDB <code>ObjectID</code> to be transfered over JSON
+console.log(&quot;Request&quot;, request);
+
+var response = new jsonrpc.Response();
+response.setId(request.getId());
+response.setResult({some : 'result'});
+console.log(&quot;Response&quot;, response);
+
+// Callback will fire automagicaly after response is parsed
+jsonrpc.parse(response.toString());</code></pre><p>output</p>
+<pre class="prettyprint source"><code>Request JsonRpcRequest {
+  message: 
+   { version: '1.1.0',
+     id: 1,
+     resource: '__global__',
+     params: {},
+     method: 'someMethod' } }
+
+Response JsonRpcResponse {
+  message: { version: '1.1.0', id: 1, result: { some: 'result' } } }
+
+Got response for message #1
+JsonRpcResponse {
+  message: { version: '1.1.0', id: 1, result: { some: 'result' } } }</code></pre><h3>JSONLess</h3><p>JSONLess allows non-primitives values like <code>Date</code> or MongoDB <code>ObjectID</code> to be transfered over JSON
 See <a href="http://ponury-kostek.github.io/json-less/">JSONLess github.io pages</a> for mor info </p>
 <h2>Docs</h2><p>See <a href="http://etk-pl.github.io/jsonrpc/">github.io pages</a> </p></article>
     </section>
@@ -217,7 +239,7 @@ See <a href="http://ponury-kostek.github.io/json-less/">JSONLess github.io pages
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
 	
-		on 2016-03-04T09:04:32+01:00
+		on 2016-03-15T11:59:06+01:00
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
