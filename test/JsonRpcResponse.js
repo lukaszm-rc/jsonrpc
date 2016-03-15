@@ -18,7 +18,7 @@ describe('JsonRpcResponse', () => {
 	});
 	describe('restricted methods', () => {
 		var obj = new jsonrpc.Response();
-		var methods = 'NS,method,params,callback'.split(',');
+		var methods = 'resource,method,params,callback'.split(',');
 		it('setVersion', ()=> {
 			assert.throws(() => {
 				obj.setVersion("0.0.0");
@@ -38,7 +38,7 @@ describe('JsonRpcResponse', () => {
 		});
 	});
 	describe('manual creation', () => {
-		it('constructor params', () => {
+		it('constructor params with result', () => {
 			assert.deepEqual((new jsonrpc.Response({
 				id : 1,
 				result : {some : 'result'}
@@ -48,7 +48,7 @@ describe('JsonRpcResponse', () => {
 				result : {some : 'result'}
 			});
 		});
-		it('methods', () => {
+		it('methods with result', () => {
 			var not = new jsonrpc.Response();
 			not.setId(1);
 			not.setResult({some : 'result'});
@@ -56,6 +56,28 @@ describe('JsonRpcResponse', () => {
 				id : 1,
 				version : jsonrpc.version,
 				result : {some : 'result'}
+			});
+		});
+		it('constructor params with error', () => {
+			assert.deepEqual((new jsonrpc.Response({
+				id : 1,
+				error : new jsonrpc.JsonRpcError({message: "some error", code : 0})
+			})).toJSON(), {
+				id : 1,
+				version : jsonrpc.version,
+				error : new jsonrpc.JsonRpcError({message: "some error", code : 0})
+			});
+		});
+		it('methods with error', () => {
+			var not = new jsonrpc.Response();
+			var error = new jsonrpc.JsonRpcError();
+			error.setMessage("some message").setCode(0);
+			not.setId(1);
+			not.setError(error);
+			assert.deepEqual(not.toJSON(), {
+				id : 1,
+				version : jsonrpc.version,
+				error : {message: error.getMessage(), code: error.getCode()}
 			});
 		});
 	});
