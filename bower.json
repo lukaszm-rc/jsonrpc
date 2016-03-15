@@ -1,0 +1,18 @@
+{
+  "name": "@etk/jsonrpc",
+  "description": "Json-rpc implementation",
+  "main": "browser/JsonRpc.js",
+  "authors": [
+    "Michał Żaloudik <michal.zaloudik@redcart.pl>"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "json",
+    "rpc"
+  ],
+  "homepage": "https://github.com/etk-pl/jsonrpc",
+  "moduleType": [
+    "globals"
+  ],
+  "private": true
+}
