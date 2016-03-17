@@ -1,6 +1,6 @@
 {
   "name": "@etk/jsonrpc",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Json-rpc implementation",
   "main": "index.js",
   "scripts": {
@@ -24,8 +24,8 @@
   },
   "homepage": "https://github.com/etk-pl/jsonrpc#readme",
   "dependencies": {
-    "json-less": "^0.2.6",
-    "utls": "^0.2.13"
+    "json-less": "^0.2.7",
+    "utls": "^0.2.16"
   },
   "devDependencies": {
     "coveralls": "^2.11.8",
