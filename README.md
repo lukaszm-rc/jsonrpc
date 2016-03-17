@@ -1,7 +1,6 @@
 # JsonRpc
 [![Build Status](https://travis-ci.org/etk-pl/jsonrpc.svg?branch=master)](https://travis-ci.org/etk-pl/jsonrpc)
-[![npm version](https://badge.fury.io/js/jsonrpc.svg)](https://badge.fury.io/js/jsonrpc)
-[![npm](https://img.shields.io/npm/dt/jsonrpc.svg)]()
+[![npm version](https://badge.fury.io/js/%40etk%2Fjsonrpc.svg)](https://badge.fury.io/js/%40etk%2Fjsonrpc)
 ## Schema
 ```javascript
 {

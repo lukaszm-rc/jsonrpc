@@ -45,7 +45,7 @@ describe('JsonRpc', () => {
 	});
 	describe('valid input', () => {
 		var messages = [
-			{
+			JSON.stringify({
 				version : jsonrpc.version,
 				id : 1,
 				result : null,
@@ -53,12 +53,11 @@ describe('JsonRpc', () => {
 					code : 1,
 					message : "msg"
 				}
-			},
-			'{"version" : "' + jsonrpc.version + '", "id" : 1, "result" : null}',
-			'{"version" : "' + jsonrpc.version + '", "id" : 1, "error" : {"code":1, "message":"msg"}}',
-			'{"version" : "' + jsonrpc.version + '", "id" : 1, "resource" : "__global__", "method": "ping", "params" : {}}',
-			'{"version" : "' + jsonrpc.version + '", "resource" : "__global__", "method": "ping", "params" : {}}'
-
+			}),
+			'{"version":"' + jsonrpc.version + '","id":1,"result":null}',
+			'{"version":"' + jsonrpc.version + '","id":1,"error":{"code":1,"message":"msg"}}',
+			'{"version":"' + jsonrpc.version + '","id":1,"resource":"__global__","method":"ping","params":{}}',
+			'{"version":"' + jsonrpc.version + '","resource":"__global__","method":"ping","params":{}}'
 		];
 		messages.forEach((message, key) => {
 			it('parse (#' + key + ')', () => {
@@ -69,19 +68,21 @@ describe('JsonRpc', () => {
 		});
 		messages.forEach((message, key) => {
 			it('hasValidSyntax (#' + key + ')', () => {
-				if (utls.getType(message) === 'String') {
-					message = JSON.parse(message);
-				}
+				message = JSON.parse(message);
 				assert.equal(jsonrpc.hasValidSyntax(message), true);
 			});
 		});
+		messages.forEach((message, key) => {
+			it('parse stringify (#' + key + ')', () => {
+				assert.equal(jsonrpc.parse(message).toString(), message);
+			});
+		});
 	});
-	it('new JsonRpc not allowed',() => {
+	it('new JsonRpc not allowed', () => {
 		assert.throws(() => {
 			new jsonrpc();
 		})
 	});
-
 	it('set/getOptions', () => {
 		var o = jsonrpc.getOptions(), no = {autoFireCallbacks : true};
 		jsonrpc.setOptions(no);

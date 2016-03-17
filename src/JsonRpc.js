@@ -277,6 +277,9 @@ class JsonRpc {
 	 * @returns {JsonRpc}
 	 */
 	setResource(resource) {
+		if (utls.getType(resource) !== 'String') {
+			throw new Error('Resource must be "String" type');
+		}
 		this.message.resource = resource;
 		return this;
 	}
@@ -295,6 +298,9 @@ class JsonRpc {
 	 * @returns {JsonRpc}
 	 */
 	setMethod(method) {
+		if (utls.getType(method) !== 'String') {
+			throw new Error('Method must be "String" type');
+		}
 		this.message.method = method;
 		return this;
 	}
@@ -315,6 +321,9 @@ class JsonRpc {
 	 */
 	setCallback(callback, tls) {
 		tls = tls || __callbacksTimeout;
+		if (typeof callback !== 'function') {
+			throw new Error('Callback must be function');
+		}
 		var self = this;
 		var timeout = setTimeout(() => {
 			JsonRpc.removeCallback(self.message.id)
@@ -323,7 +332,6 @@ class JsonRpc {
 			cb : callback,
 			timeout : timeout
 		};
-		//console.log(__callbacks);
 		return this;
 	}
 
@@ -341,6 +349,9 @@ class JsonRpc {
 	 * @returns {JsonRpc}
 	 */
 	setParams(params) {
+		if (utls.getType(params) !== 'Object') {
+			throw new Error('Params must be "Object" type');
+		}
 		this.message.params = params;
 		return this;
 	}
