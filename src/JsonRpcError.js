@@ -56,8 +56,8 @@ class JsonRpcError {
 	 * @returns {JsonRpcError}
 	 */
 	setMessage(message) {
-		if (utls.getType(message) !== 'String') {
-			throw new Error('Message must be string');
+		if (utls.getType(message) !== 'String' && !message.length) {
+			throw new Error('Message must be non-zero length string');
 		}
 		this.message = message;
 		return this;
@@ -72,7 +72,7 @@ class JsonRpcError {
 		return error instanceof JsonRpcError || (utls.getType(error) === 'Object' && utls.equals(Object.getOwnPropertyNames(error).sort(), [
 				'code',
 				'message'
-			]) && error.code instanceof Number && error.message instanceof String);
+			]) && utls.getType(error.code) === 'Integer' && utls.getType(error.message) === 'String' && !!error.message.length);
 	}
 }
 /**
@@ -123,5 +123,4 @@ JsonRpcError.E_INTERNAL = {
 	code : -6,
 	message : 'Internal error'
 };
-
 module.exports = JsonRpcError;

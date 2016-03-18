@@ -16,6 +16,18 @@ describe('JsonRpcRequest', () => {
 			new jsonrpc.Request({});
 		});
 	});
+	it('is', () => {
+		assert.equal((new jsonrpc.Request()).isNotification, false);
+		assert.equal((new jsonrpc.Request()).isRequest, true);
+		assert.equal((new jsonrpc.Request()).isResponse, false);
+	});
+	it('defaults', () => {
+		var req = new jsonrpc.Request();
+		assert.equal(req.getVersion(), jsonrpc.version);
+		assert.equal(req.getResource(), '__global__');
+		assert.deepStrictEqual(req.getParams(), {});
+		assert.equal(utls.getType(req.getId()), 'Integer');
+	});
 	describe('restricted methods', () => {
 		var obj = new jsonrpc.Request();
 		var methods = 'result,error'.split(',');
@@ -57,29 +69,48 @@ describe('JsonRpcRequest', () => {
 				params : {"some" : "params"}
 			});
 			setImmediate(() => {
-				new jsonrpc.Response({id:1, result:""});
+				new jsonrpc.Response({
+					id : 1,
+					result : ""
+				});
 			});
 		});
 		it('methods', (done) => {
-			var not = new jsonrpc.Request();
-			not.setId(2);
-			not.setResource("someNS");
-			not.setMethod("someMethod");
-			not.setParams({some : "params"});
-			not.setCallback((res) => {
+			var req = new jsonrpc.Request();
+			req.setId(2);
+			assert.throws(() => {
+				req.setId('1');
+			});
+			req.setResource("someResource");
+			assert.throws(() => {
+				req.setResource(null);
+			});
+			req.setMethod("someMethod");
+			assert.throws(() => {
+				req.setMethod(null);
+			});
+			req.setParams({some : "params"});
+			assert.throws(() => {
+				req.setParams(null);
+			});
+			req.setCallback((res) => {
 				assert.ok(res instanceof jsonrpc.Response);
 				assert.equal(res.getId(), 2);
 				done();
 			});
-			assert.deepEqual(not.toJSON(), {
-				id : 2,
-				version : jsonrpc.version,
-				resource : "someNS",
-				method : "someMethod",
-				params : {"some" : "params"}
+			assert.throws(() => {
+				req.setCallback('cb', 'tls');
 			});
+			assert.equal(req.getResource(), "someResource");
+			assert.equal(req.getMethod(), "someMethod");
+			assert.deepStrictEqual(req.getParams(), {some : "params"});
+			assert.equal(req.getId(), 2);
+			assert.equal(utls.getType(req.getCallback()), "Function");
 			setImmediate(() => {
-				new jsonrpc.Response({id:2, result:""});
+				new jsonrpc.Response({
+					id : 2,
+					result : ""
+				});
 			});
 		});
 	});

@@ -88,4 +88,18 @@ describe('JsonRpc', () => {
 		jsonrpc.setOptions(no);
 		assert.deepEqual(jsonrpc.getOptions(), no);
 	});
+	describe('getType', () => {
+		it('valid input', () => {
+			var req = new jsonrpc.Request({method : "someMethod"}), res = new jsonrpc.Response({id: 1, result : ''}), not = new jsonrpc.Notification({method : "someMethod"});
+
+			assert.equal(jsonrpc.getType(req.toJSON()), "request");
+			assert.equal(jsonrpc.getType(res.toJSON()), "response");
+			assert.equal(jsonrpc.getType(not.toJSON()), "notification");
+		});
+		it('invalid input', () => {
+			assert.throws(() => {
+				jsonrpc.getType();
+			});
+		});
+	});
 });

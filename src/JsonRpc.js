@@ -118,7 +118,7 @@ class JsonRpc {
 		if (message.error !== undefined || message.result !== undefined) {
 			return false;
 		}
-		return message.version === __version && utls.getType(message.id) === 'Integer' && message.id > 0 && utls.getType(message.resource) === 'String' && message.resource.length && utls.getType(message.method) === 'String' && message.method.length && utls.getType(message.params) === 'Object';
+		return message.version === __version && utls.getType(message.id) === 'Integer' && message.id > 0 && utls.getType(message.resource) === 'String' && !!message.resource.length && utls.getType(message.method) === 'String' && !!message.method.length && utls.getType(message.params) === 'Object';
 	}
 
 	/**
@@ -141,7 +141,7 @@ class JsonRpc {
 		return message.version === __version && (message.result !== undefined || ((utls.getType(message.error) === 'Object' && utls.equals(Object.getOwnPropertyNames(message.error).sort(), [
 				'code',
 				'message'
-			]) && utls.getType(message.error.code) === 'Integer' && utls.getType(message.error.message) === 'String') || (utls.getType(message.error) === 'JsonRpcError' && JsonRpcError.isValid(message.error))));
+			]) && utls.getType(message.error.code) === 'Integer' && utls.getType(message.error.message) === 'String' && !!message.error.message) || (utls.getType(message.error) === 'JsonRpcError' && JsonRpcError.isValid(message.error))));
 	}
 
 	/**
@@ -239,6 +239,7 @@ class JsonRpc {
 	/**
 	 * Sets messeage schema version
 	 * @param {String} version
+	 * @deprecated Will be removed in 1.3.x
 	 */
 	setVersion(version) {
 		this.message.version = version;
@@ -259,7 +260,10 @@ class JsonRpc {
 	 * @returns {JsonRpc}
 	 */
 	setId(id) {
-		this.message.id = parseInt(id, 10);
+		if (utls.getType(id) !== 'Integer') {
+			throw new Error('Id must be integer');
+		}
+		this.message.id = id;
 		return this;
 	}
 
@@ -310,7 +314,7 @@ class JsonRpc {
 	 * @returns {Function|undefined}
 	 */
 	getCallback() {
-		return __callbacks[this.message.id] ? __callbacks[this.message.id].cb : undefined;
+		return typeof __callbacks[this.message.id] === 'object' ? __callbacks[this.message.id].cb : undefined;
 	}
 
 	/**
@@ -326,7 +330,7 @@ class JsonRpc {
 		}
 		var self = this;
 		var timeout = setTimeout(() => {
-			JsonRpc.removeCallback(self.message.id)
+			JsonRpc.removeCallback(self.message.id);
 		}, tls);
 		__callbacks[this.message.id] = {
 			cb : callback,

@@ -19,6 +19,7 @@ class JsonRpcNotification extends JsonRpc {
 			}
 			message.version = message.version || JsonRpc.version;
 			message.resource = message.resource || '__global__';
+			message.params = message.params || {};
 			if (!JsonRpc.isValidNotification(message)) {
 				throw new Error('Message is not valid json rpc notification');
 			}
@@ -26,6 +27,7 @@ class JsonRpcNotification extends JsonRpc {
 			message = {};
 			message.version = JsonRpc.version;
 			message.resource = '__global__';
+			message.params = message.params || {};
 		}
 		super(message);
 	}

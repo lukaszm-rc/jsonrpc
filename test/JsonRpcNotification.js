@@ -16,6 +16,17 @@ describe('JsonRpcNotification', () => {
 			new jsonrpc.Notification({});
 		});
 	});
+	it('is', () => {
+		assert.equal((new jsonrpc.Notification()).isNotification, true);
+		assert.equal((new jsonrpc.Notification()).isRequest, false);
+		assert.equal((new jsonrpc.Notification()).isResponse, false);
+	});
+	it('defaults', () => {
+		var not = new jsonrpc.Notification();
+		assert.equal(not.getVersion(), jsonrpc.version);
+		assert.equal(not.getResource(), '__global__');
+		assert.deepStrictEqual(not.getParams(), {});
+	});
 	describe('restricted methods', () => {
 		var obj = new jsonrpc.Notification();
 		var methods = 'id,result,error'.split(',');
@@ -55,12 +66,9 @@ describe('JsonRpcNotification', () => {
 			not.setResource("someResource");
 			not.setMethod("someMethod");
 			not.setParams({some : "params"});
-			assert.deepEqual(not.toJSON(), {
-				version : jsonrpc.version,
-				resource : "someResource",
-				method : "someMethod",
-				params : {"some" : "params"}
-			});
+			assert.equal(not.getResource(), "someResource");
+			assert.equal(not.getMethod(), "someMethod");
+			assert.deepStrictEqual(not.getParams(), {some : "params"});
 		});
 	});
 });

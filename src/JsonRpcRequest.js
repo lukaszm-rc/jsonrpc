@@ -36,7 +36,6 @@ class JsonRpcRequest extends JsonRpc {
 			message.resource = '__global__';
 			message.params = message.params || {};
 		}
-
 		super(message);
 	}
 

@@ -16,6 +16,15 @@ describe('JsonRpcResponse', () => {
 			new jsonrpc.Response({});
 		});
 	});
+	it('is', () => {
+		assert.equal((new jsonrpc.Response()).isNotification, false);
+		assert.equal((new jsonrpc.Response()).isRequest, false);
+		assert.equal((new jsonrpc.Response()).isResponse, true);
+	});
+	it('defaults', () => {
+		var res = new jsonrpc.Response();
+		assert.equal(res.getVersion(), jsonrpc.version);
+	});
 	describe('restricted methods', () => {
 		var obj = new jsonrpc.Response();
 		var methods = 'resource,method,params,callback'.split(',');
@@ -52,20 +61,25 @@ describe('JsonRpcResponse', () => {
 			var not = new jsonrpc.Response();
 			not.setId(1);
 			not.setResult({some : 'result'});
-			assert.deepEqual(not.toJSON(), {
-				id : 1,
-				version : jsonrpc.version,
-				result : {some : 'result'}
-			});
+			assert.equal(not.getVersion(), jsonrpc.version);
+			assert.equal(not.getId(), 1);
+			assert.deepStrictEqual(not.getResult(), {some : 'result'});
+			assert.equal(not.getError(), undefined);
 		});
 		it('constructor params with error', () => {
 			assert.deepEqual((new jsonrpc.Response({
 				id : 1,
-				error : new jsonrpc.JsonRpcError({message: "some error", code : 0})
+				error : new jsonrpc.JsonRpcError({
+					message : "some error",
+					code : 0
+				})
 			})).toJSON(), {
 				id : 1,
 				version : jsonrpc.version,
-				error : new jsonrpc.JsonRpcError({message: "some error", code : 0})
+				error : new jsonrpc.JsonRpcError({
+					message : "some error",
+					code : 0
+				})
 			});
 		});
 		it('methods with error', () => {
@@ -77,7 +91,10 @@ describe('JsonRpcResponse', () => {
 			assert.deepEqual(not.toJSON(), {
 				id : 1,
 				version : jsonrpc.version,
-				error : {message: error.getMessage(), code: error.getCode()}
+				error : {
+					message : error.getMessage(),
+					code : error.getCode()
+				}
 			});
 		});
 	});
