@@ -43,7 +43,7 @@ class JsonRpc {
 	 * @param {Object} options
 	 */
 	static setOptions(options) {
-		__options = utls.extend(__options, options);
+		utls.extend(__options, options);
 	}
 
 	/**
