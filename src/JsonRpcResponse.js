@@ -7,6 +7,7 @@ var JsonRpc = require('./JsonRpc.js');
 /**
  * @author Michał Żaloudik <michal.zaloudik@redcart.pl>
  * @extends JsonRpc
+ * @augments JsonRpc
  */
 class JsonRpcResponse extends JsonRpc {
 	/**

@@ -10,8 +10,11 @@
 var utls = require('utls');
 var JsonRpc = require('./JsonRpc.js')
 /**
+ * @typedef {JsonRpcRequest} JsonRpcRequest
+ * @class
  * @author Michał Żaloudik <michal.zaloudik@redcart.pl>
  * @extends JsonRpc
+ * @augments JsonRpc
  */
 class JsonRpcRequest extends JsonRpc {
 	/**

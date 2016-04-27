@@ -10,6 +10,8 @@ var __callbacks = {};
 var __callbacksTimeout = 60000;
 var __options = {autoFireCallbacks : true};
 /**
+ * @property {JsonRpcRequest} JsonRpc.JsonRpcRequest
+ * @class
  * @abstract
  * @author Michał Żaloudik <michal.zaloudik@redcart.pl>
  */
